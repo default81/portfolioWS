@@ -1,926 +1,1001 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAISON — Elevated Fashion</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cream: #f5f0eb;
-    --ivory: #faf8f5;
-    --charcoal: #1a1a18;
-    --warm-gray: #8a847c;
-    --light-gray: #d8d4ce;
-    --gold: #b8943f;
-    --gold-light: #d4ac5a;
-    --shadow: rgba(26,26,24,0.08);
-    --shadow-deep: rgba(26,26,24,0.18);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Explorer - Interactive World Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0a1428;
+            --secondary: #1b2d4d;
+            --accent: #00d4ff;
+            --accent-dark: #0099cc;
+            --text-light: #e0e0e0;
+            --text-dark: #1a1a1a;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+        }
 
-  body {
-    font-family: 'Jost', sans-serif;
-    background: var(--ivory);
-    color: var(--charcoal);
-    overflow-x: hidden;
-  }
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
 
-  /* ── HEADER ── */
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 3rem;
-    height: 70px;
-    background: rgba(250,248,245,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--light-gray);
-  }
+        /* Header */
+        header {
+            background: rgba(10, 20, 40, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid var(--accent);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+            position: relative;
+            z-index: 50;
+        }
 
-  .logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.9rem;
-    font-weight: 300;
-    letter-spacing: 0.25em;
-    color: var(--charcoal);
-    text-decoration: none;
-  }
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-  nav { display: flex; gap: 2.2rem; }
-  nav a {
-    font-size: 0.72rem; letter-spacing: 0.18em; font-weight: 400;
-    text-transform: uppercase; color: var(--warm-gray);
-    text-decoration: none; transition: color 0.25s;
-  }
-  nav a:hover, nav a.active { color: var(--charcoal); }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
 
-  .header-actions { display: flex; gap: 1.4rem; align-items: center; }
-  .icon-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--charcoal); font-size: 1.1rem;
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; transition: background 0.2s;
-    position: relative;
-  }
-  .icon-btn:hover { background: var(--cream); }
-  .cart-count {
-    position: absolute; top: -2px; right: -2px;
-    background: var(--gold); color: white;
-    font-size: 0.55rem; width: 16px; height: 16px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 500;
-  }
+        .tagline {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            opacity: 0.7;
+        }
 
-  /* ── MAIN LAYOUT ── */
-  main {
-    margin-top: 70px;
-    display: grid;
-    grid-template-columns: 300px 1fr 340px;
-    height: calc(100vh - 70px);
-    overflow: hidden;
-  }
+        .header-info {
+            text-align: right;
+        }
 
-  /* ── LEFT PANEL — CATALOG ── */
-  .catalog-panel {
-    background: var(--cream);
-    border-right: 1px solid var(--light-gray);
-    display: flex; flex-direction: column;
-    overflow: hidden;
-  }
+        .header-info p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
 
-  .panel-header {
-    padding: 1.4rem 1.6rem 1rem;
-    border-bottom: 1px solid var(--light-gray);
-  }
-  .panel-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem; font-weight: 400; letter-spacing: 0.05em;
-    margin-bottom: 1rem; color: var(--charcoal);
-  }
+        /* Main Container */
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+            gap: 1rem;
+            padding: 1rem;
+        }
 
-  /* Category tabs */
-  .cat-tabs {
-    display: flex; gap: 0.3rem; flex-wrap: wrap;
-  }
-  .cat-tab {
-    padding: 0.3rem 0.8rem;
-    border: 1px solid var(--light-gray);
-    background: transparent; border-radius: 20px;
-    font-size: 0.65rem; letter-spacing: 0.12em;
-    text-transform: uppercase; cursor: pointer;
-    color: var(--warm-gray); font-family: 'Jost', sans-serif;
-    transition: all 0.22s;
-  }
-  .cat-tab.active, .cat-tab:hover {
-    background: var(--charcoal); color: white; border-color: var(--charcoal);
-  }
+        /* Map Area */
+        .map-container {
+            flex: 1;
+            background: rgba(27, 45, 77, 0.5);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: grab;
+        }
 
-  /* Section tabs */
-  .section-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--light-gray);
-  }
-  .section-tab {
-    flex: 1; padding: 0.85rem;
-    background: none; border: none; cursor: pointer;
-    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--warm-gray); font-family: 'Jost', sans-serif;
-    border-bottom: 2px solid transparent; transition: all 0.22s;
-    margin-bottom: -1px;
-  }
-  .section-tab.active {
-    color: var(--charcoal); border-bottom-color: var(--charcoal);
-  }
+        .map-container:active {
+            cursor: grabbing;
+        }
 
-  /* Clothing grid */
-  .clothing-grid {
-    flex: 1; overflow-y: auto; padding: 1rem;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.75rem; align-content: start;
-  }
-  .clothing-grid::-webkit-scrollbar { width: 4px; }
-  .clothing-grid::-webkit-scrollbar-thumb { background: var(--light-gray); border-radius: 2px; }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
 
-  .clothing-card {
-    background: white; border-radius: 8px;
-    overflow: hidden; cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.25s; position: relative;
-    box-shadow: 0 2px 8px var(--shadow);
-  }
-  .clothing-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--shadow-deep); }
-  .clothing-card.selected { border-color: var(--gold); }
-  .clothing-card.selected::after {
-    content: '✓'; position: absolute; top: 6px; right: 6px;
-    background: var(--gold); color: white; border-radius: 50%;
-    width: 20px; height: 20px; font-size: 0.65rem;
-    display: flex; align-items: center; justify-content: center;
-  }
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: rgba(10, 20, 40, 0.95);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 250px;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+            display: none;
+        }
 
-  .card-visual {
-    height: 100px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3rem; position: relative; overflow: hidden;
-  }
+        .tooltip.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
 
-  .card-info { padding: 0.6rem 0.7rem; }
-  .card-name {
-    font-size: 0.7rem; letter-spacing: 0.05em;
-    color: var(--charcoal); font-weight: 500; margin-bottom: 0.15rem;
-  }
-  .card-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem; color: var(--gold);
-  }
+        .tooltip-country {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-  /* ── CENTER — MODEL STAGE ── */
-  .model-stage {
-    background: linear-gradient(160deg, #f0ece6 0%, #e8e3dc 50%, #ede8e1 100%);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
+        .tooltip-info {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
 
-  .stage-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 50% 100%, rgba(184,148,63,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 20% 20%, rgba(255,255,255,0.4) 0%, transparent 60%);
-  }
+        .tooltip-hint {
+            font-size: 0.75rem;
+            color: var(--success);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
 
-  /* Floor shadow */
-  .stage-floor {
-    position: absolute; bottom: 60px; left: 50%;
-    transform: translateX(-50%);
-    width: 160px; height: 20px;
-    background: radial-gradient(ellipse, rgba(26,26,24,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-  }
+        /* Info Panel */
+        .info-panel {
+            width: 350px;
+            background: rgba(27, 45, 77, 0.8);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-  /* View controls */
-  .view-controls {
-    position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%);
-    display: flex; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
-    border-radius: 30px; padding: 0.3rem;
-    border: 1px solid var(--light-gray);
-    gap: 0.2rem; z-index: 10;
-  }
-  .view-btn {
-    padding: 0.4rem 1rem; border-radius: 20px; border: none;
-    font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
-    cursor: pointer; font-family: 'Jost', sans-serif;
-    color: var(--warm-gray); background: transparent; transition: all 0.22s;
-  }
-  .view-btn.active {
-    background: var(--charcoal); color: white;
-  }
+        .info-panel::-webkit-scrollbar {
+            width: 8px;
+        }
 
-  /* Rotate controls */
-  .rotate-controls {
-    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 1rem;
-    background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
-    border-radius: 30px; padding: 0.5rem 1.4rem;
-    border: 1px solid var(--light-gray);
-  }
-  .rotate-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--charcoal); font-size: 1rem; padding: 0.2rem;
-    transition: transform 0.15s;
-  }
-  .rotate-btn:hover { transform: scale(1.2); }
-  .rotate-hint {
-    font-size: 0.6rem; letter-spacing: 0.12em; color: var(--warm-gray); text-transform: uppercase;
-  }
+        .info-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
 
-  /* Zoom controls */
-  .zoom-controls {
-    position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 0.4rem;
-  }
-  .zoom-btn {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
-    border: 1px solid var(--light-gray); cursor: pointer;
-    font-size: 1rem; display: flex; align-items: center; justify-content: center;
-    color: var(--charcoal); transition: all 0.2s;
-  }
-  .zoom-btn:hover { background: white; box-shadow: 0 2px 10px var(--shadow-deep); }
+        .info-panel::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
 
-  /* ─── SVG MODEL ─── */
-  .model-wrapper {
-    position: relative; z-index: 2;
-    transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
-  }
+        .info-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-dark);
+        }
 
-  .model-svg {
-    width: 220px;
-    filter: drop-shadow(0 12px 24px rgba(26,26,24,0.12));
-    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-  }
+        .panel-header {
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
 
-  /* ── RIGHT PANEL — DETAILS ── */
-  .detail-panel {
-    border-left: 1px solid var(--light-gray);
-    background: white;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-  }
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
 
-  .outfit-summary {
-    padding: 1.6rem;
-    border-bottom: 1px solid var(--light-gray);
-  }
-  .outfit-label {
-    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--warm-gray); margin-bottom: 0.6rem;
-  }
-  .outfit-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 400; line-height: 1.2;
-    color: var(--charcoal);
-  }
+        .panel-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
 
-  /* Outfit pieces */
-  .outfit-pieces {
-    padding: 1.2rem 1.6rem;
-    border-bottom: 1px solid var(--light-gray);
-    display: flex; flex-direction: column; gap: 0.8rem;
-  }
-  .piece-row {
-    display: flex; align-items: center; gap: 0.9rem;
-    padding: 0.7rem; border-radius: 8px;
-    background: var(--ivory); position: relative;
-  }
-  .piece-row.empty { opacity: 0.4; border: 1px dashed var(--light-gray); }
-  .piece-emoji { font-size: 1.8rem; width: 40px; text-align: center; }
-  .piece-info { flex: 1; }
-  .piece-type {
-    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--warm-gray); margin-bottom: 0.15rem;
-  }
-  .piece-name { font-size: 0.82rem; color: var(--charcoal); font-weight: 500; }
-  .piece-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem; color: var(--gold);
-  }
-  .remove-piece {
-    position: absolute; top: 6px; right: 8px;
-    background: none; border: none; cursor: pointer;
-    color: var(--light-gray); font-size: 0.9rem; transition: color 0.2s;
-  }
-  .remove-piece:hover { color: #c0392b; }
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: var(--text-light);
+            opacity: 0.5;
+        }
 
-  /* Color & size */
-  .options-section {
-    padding: 1.2rem 1.6rem;
-    border-bottom: 1px solid var(--light-gray);
-  }
-  .option-label {
-    font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--warm-gray); margin-bottom: 0.7rem;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .option-label span { color: var(--charcoal); font-size: 0.7rem; }
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
 
-  .color-swatches { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .color-swatch {
-    width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
-    border: 2px solid transparent; transition: all 0.2s;
-    position: relative;
-  }
-  .color-swatch.active { border-color: var(--charcoal); transform: scale(1.15); }
-  .color-swatch::after {
-    content: ''; position: absolute; inset: -3px;
-    border-radius: 50%; border: 1px solid transparent;
-    transition: border-color 0.2s;
-  }
-  .color-swatch.active::after { border-color: var(--charcoal); }
+        .info-section {
+            margin-bottom: 1.5rem;
+        }
 
-  .size-options { display: flex; gap: 0.4rem; }
-  .size-btn {
-    width: 36px; height: 36px; border: 1px solid var(--light-gray);
-    background: none; border-radius: 6px; cursor: pointer;
-    font-size: 0.72rem; font-family: 'Jost', sans-serif;
-    color: var(--charcoal); transition: all 0.2s;
-  }
-  .size-btn:hover { border-color: var(--charcoal); }
-  .size-btn.active { background: var(--charcoal); color: white; border-color: var(--charcoal); }
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--accent);
+        }
 
-  /* Total & actions */
-  .purchase-section {
-    padding: 1.4rem 1.6rem; margin-top: auto;
-  }
-  .total-row {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 1.2rem;
-  }
-  .total-label {
-    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-gray);
-  }
-  .total-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem; font-weight: 400; color: var(--charcoal);
-  }
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+        }
 
-  .btn-primary {
-    width: 100%; padding: 1rem;
-    background: var(--charcoal); color: white;
-    border: none; border-radius: 6px; cursor: pointer;
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-    font-family: 'Jost', sans-serif; font-weight: 400;
-    transition: all 0.25s; margin-bottom: 0.7rem;
-  }
-  .btn-primary:hover { background: #2d2d2b; transform: translateY(-1px); box-shadow: 0 4px 14px var(--shadow-deep); }
+        .rank-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
 
-  .btn-secondary {
-    width: 100%; padding: 0.85rem;
-    background: transparent; color: var(--charcoal);
-    border: 1px solid var(--light-gray); border-radius: 6px; cursor: pointer;
-    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-    font-family: 'Jost', sans-serif; transition: all 0.25s;
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  }
-  .btn-secondary:hover { border-color: var(--charcoal); }
+        .rank-value {
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
 
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--charcoal); color: white;
-    padding: 0.8rem 1.8rem; border-radius: 30px;
-    font-size: 0.72rem; letter-spacing: 0.1em;
-    opacity: 0; transition: all 0.35s; z-index: 999; white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .rank-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-  /* Animations */
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes pulse {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-  }
-  .model-change { animation: pulse 0.4s ease; }
-  .card-enter { animation: slideIn 0.3s ease forwards; }
+        .rank-badge.gold {
+            background: #ffd700;
+        }
 
-  /* Scrollbar for detail panel */
-  .detail-panel { overflow-y: auto; }
-  .detail-panel::-webkit-scrollbar { width: 3px; }
-  .detail-panel::-webkit-scrollbar-thumb { background: var(--light-gray); }
+        .rank-badge.silver {
+            background: #c0c0c0;
+        }
 
-  /* Outfit name badge */
-  .outfit-badge {
-    display: inline-block; padding: 0.25rem 0.8rem;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    color: white; border-radius: 20px;
-    font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-</style>
+        .rank-badge.bronze {
+            background: #cd7f32;
+        }
+
+        .relations-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .relation-tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .relation-tag.ally {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .relation-tag.foe {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+            }
+        }
+
+        .glow {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 0.8rem;
+            z-index: 40;
+        }
+
+        .control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .control-btn:hover {
+            background: var(--accent);
+            color: var(--text-dark);
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .info-panel {
+                width: 100%;
+                height: 250px;
+            }
+
+            .map-container {
+                flex: 1;
+            }
+        }
+
+        /* Neon effect */
+        .neon-text {
+            text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+        }
+    </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<header>
-  <a class="logo" href="#">MAISON</a>
-  <nav>
-    <a href="#" class="active">Studio</a>
-    <a href="#">Collections</a>
-    <a href="#">Lookbook</a>
-    <a href="#">About</a>
-  </nav>
-  <div class="header-actions">
-    <button class="icon-btn" title="Search">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </button>
-    <button class="icon-btn" title="Wishlist" id="wishlistBtn">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    </button>
-    <button class="icon-btn" title="Cart" id="cartBtn">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      <span class="cart-count" id="cartCount">0</span>
-    </button>
-  </div>
-</header>
-
-<!-- MAIN -->
-<main>
-
-  <!-- LEFT: Catalog -->
-  <div class="catalog-panel">
-    <div class="panel-header">
-      <div class="panel-title">Wardrobe</div>
-      <div class="cat-tabs">
-        <button class="cat-tab active" onclick="filterCat(this,'all')">All</button>
-        <button class="cat-tab" onclick="filterCat(this,'men')">Men</button>
-        <button class="cat-tab" onclick="filterCat(this,'women')">Women</button>
-        <button class="cat-tab" onclick="filterCat(this,'casual')">Casual</button>
-        <button class="cat-tab" onclick="filterCat(this,'formal')">Formal</button>
-      </div>
-    </div>
-    <div class="section-tabs">
-      <button class="section-tab active" onclick="showSection(this,'tops')">Tops</button>
-      <button class="section-tab" onclick="showSection(this,'bottoms')">Bottoms</button>
-      <button class="section-tab" onclick="showSection(this,'outer')">Outer</button>
-    </div>
-    <div class="clothing-grid" id="clothingGrid"></div>
-  </div>
-
-  <!-- CENTER: Model Stage -->
-  <div class="model-stage">
-    <div class="stage-bg"></div>
-
-    <div class="view-controls">
-      <button class="view-btn active" onclick="setView(this,'front')">Front</button>
-      <button class="view-btn" onclick="setView(this,'side')">Side</button>
-      <button class="view-btn" onclick="setView(this,'back')">Back</button>
-    </div>
-
-    <div class="model-wrapper" id="modelWrapper">
-      <svg class="model-svg" id="modelSVG" viewBox="0 0 220 520" xmlns="http://www.w3.org/2000/svg">
-        <!-- Model will be drawn via JS -->
-      </svg>
-    </div>
-
-    <div class="stage-floor"></div>
-
-    <div class="zoom-controls">
-      <button class="zoom-btn" onclick="zoomModel(1.1)">+</button>
-      <button class="zoom-btn" onclick="zoomModel(0.9)">−</button>
-    </div>
-
-    <div class="rotate-controls">
-      <button class="rotate-btn" onclick="rotateModel(-1)">←</button>
-      <span class="rotate-hint">Rotate</span>
-      <button class="rotate-btn" onclick="rotateModel(1)">→</button>
-    </div>
-  </div>
-
-  <!-- RIGHT: Details -->
-  <div class="detail-panel">
-    <div class="outfit-summary">
-      <div class="outfit-badge">Virtual Studio</div>
-      <div class="outfit-label">Current Look</div>
-      <div class="outfit-title" id="outfitTitle">Start Building<br>Your Outfit</div>
-    </div>
-
-    <div class="outfit-pieces" id="outfitPieces">
-      <div class="piece-row empty" id="slot-top">
-        <div class="piece-emoji">👕</div>
-        <div class="piece-info">
-          <div class="piece-type">Top</div>
-          <div class="piece-name">Select a top</div>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo">🌍 GLOBAL EXPLORER</div>
+                <div class="tagline">Explore nations, discover insights</div>
+            </div>
+            <div class="header-info">
+                <p><span id="currentCountry">Hover over a country</span></p>
+            </div>
         </div>
-      </div>
-      <div class="piece-row empty" id="slot-bottom">
-        <div class="piece-emoji">👖</div>
-        <div class="piece-info">
-          <div class="piece-type">Bottom</div>
-          <div class="piece-name">Select bottoms</div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Map Area -->
+        <div class="map-container">
+            <canvas id="mapCanvas"></canvas>
+            <div class="controls">
+                <button class="control-btn" id="resetBtn" title="Reset View">⟳</button>
+                <button class="control-btn" id="zoomInBtn" title="Zoom In">+</button>
+                <button class="control-btn" id="zoomOutBtn" title="Zoom Out">−</button>
+            </div>
         </div>
-      </div>
-      <div class="piece-row empty" id="slot-outer">
-        <div class="piece-emoji">🧥</div>
-        <div class="piece-info">
-          <div class="piece-type">Outerwear</div>
-          <div class="piece-name">Optional layer</div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div id="infoPanelContent">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🌐</div>
+                    <p>Click on a country to view detailed information</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="options-section">
-      <div class="option-label">Color <span id="colorName">—</span></div>
-      <div class="color-swatches" id="colorSwatches">
-        <div class="color-swatch active" style="background:#1a1a18" onclick="selectColor(this,'Noir')" title="Noir"></div>
-        <div class="color-swatch" style="background:#8b6f5e" onclick="selectColor(this,'Mocha')" title="Mocha"></div>
-        <div class="color-swatch" style="background:#c4a882" onclick="selectColor(this,'Sand')" title="Sand"></div>
-        <div class="color-swatch" style="background:#4a6fa5" onclick="selectColor(this,'Navy')" title="Navy"></div>
-        <div class="color-swatch" style="background:#7a9e7e" onclick="selectColor(this,'Sage')" title="Sage"></div>
-        <div class="color-swatch" style="background:#c0392b" onclick="selectColor(this,'Bordeaux')" title="Bordeaux"></div>
-        <div class="color-swatch" style="background:#f5f0eb;border:1px solid #d8d4ce" onclick="selectColor(this,'Ivory')" title="Ivory"></div>
-        <div class="color-swatch" style="background:#2c2c54" onclick="selectColor(this,'Plum')" title="Plum"></div>
-      </div>
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-country" id="tooltipCountry">Country</div>
+        <div class="tooltip-info" id="tooltipInfo">Info</div>
+        <div class="tooltip-hint">Click for details</div>
     </div>
 
-    <div class="options-section">
-      <div class="option-label">Size <span id="sizeName">M</span></div>
-      <div class="size-options">
-        <button class="size-btn" onclick="selectSize(this,'XS')">XS</button>
-        <button class="size-btn" onclick="selectSize(this,'S')">S</button>
-        <button class="size-btn active" onclick="selectSize(this,'M')">M</button>
-        <button class="size-btn" onclick="selectSize(this,'L')">L</button>
-        <button class="size-btn" onclick="selectSize(this,'XL')">XL</button>
-      </div>
-    </div>
+    <script>
+        // ==================== COUNTRY DATA ====================
+        const countryData = {
+            'USA': {
+                flag: '🇺🇸',
+                gdp: { rank: 1, value: '$27.4T' },
+                gdpPerCapita: { rank: 6, value: '$82,500' },
+                happinessIndex: { rank: 15, score: 7.1 },
+                allies: ['UK', 'Canada', 'Japan', 'South Korea', 'Australia'],
+                foes: ['China', 'Russia', 'Iran', 'North Korea'],
+                population: '331M',
+                capital: 'Washington DC',
+                region: 'North America',
+                description: 'World\'s largest economy with strong tech and military power'
+            },
+            'China': {
+                flag: '🇨🇳',
+                gdp: { rank: 2, value: '$17.9T' },
+                gdpPerCapita: { rank: 72, value: '$12,720' },
+                happinessIndex: { rank: 78, score: 5.5 },
+                allies: ['Russia', 'Pakistan', 'North Korea', 'Iran'],
+                foes: ['USA', 'Japan', 'India', 'Australia'],
+                population: '1.4B',
+                capital: 'Beijing',
+                region: 'East Asia',
+                description: 'Emerging superpower with massive population and manufacturing capacity'
+            },
+            'Japan': {
+                flag: '🇯🇵',
+                gdp: { rank: 3, value: '$4.2T' },
+                gdpPerCapita: { rank: 23, value: '$33,800' },
+                happinessIndex: { rank: 51, score: 6.2 },
+                allies: ['USA', 'South Korea', 'Australia'],
+                foes: ['China', 'Russia'],
+                population: '125M',
+                capital: 'Tokyo',
+                region: 'East Asia',
+                description: 'Technological leader with advanced manufacturing and robotics'
+            },
+            'Germany': {
+                flag: '🇩🇪',
+                gdp: { rank: 4, value: '$4.0T' },
+                gdpPerCapita: { rank: 18, value: '$48,900' },
+                happinessIndex: { rank: 24, score: 6.9 },
+                allies: ['France', 'EU', 'USA'],
+                foes: [],
+                population: '83M',
+                capital: 'Berlin',
+                region: 'Europe',
+                description: 'Industrial powerhouse and automotive leader of Europe'
+            },
+            'UK': {
+                flag: '🇬🇧',
+                gdp: { rank: 5, value: '$3.3T' },
+                gdpPerCapita: { rank: 20, value: '$46,200' },
+                happinessIndex: { rank: 19, score: 7.0 },
+                allies: ['USA', 'EU', 'Canada', 'Australia'],
+                foes: [],
+                population: '67M',
+                capital: 'London',
+                region: 'Europe',
+                description: 'Financial hub with strong cultural influence globally'
+            },
+            'France': {
+                flag: '🇫🇷',
+                gdp: { rank: 7, value: '$2.8T' },
+                gdpPerCapita: { rank: 25, value: '$42,700' },
+                happinessIndex: { rank: 21, score: 6.9 },
+                allies: ['Germany', 'EU', 'USA'],
+                foes: [],
+                population: '68M',
+                capital: 'Paris',
+                region: 'Europe',
+                description: 'Cultural center of Europe with strong wine and luxury industries'
+            },
+            'India': {
+                flag: '🇮🇳',
+                gdp: { rank: 6, value: '$3.7T' },
+                gdpPerCapita: { rank: 150, value: '$2,550' },
+                happinessIndex: { rank: 126, score: 5.2 },
+                allies: ['Russia', 'Japan', 'USA'],
+                foes: ['Pakistan', 'China'],
+                population: '1.4B',
+                capital: 'New Delhi',
+                region: 'South Asia',
+                description: 'World\'s fastest-growing major economy with IT services leadership'
+            },
+            'Russia': {
+                flag: '🇷🇺',
+                gdp: { rank: 11, value: '$1.8T' },
+                gdpPerCapita: { rank: 68, value: '$11,600' },
+                happinessIndex: { rank: 88, score: 5.0 },
+                allies: ['China', 'India', 'Iran'],
+                foes: ['USA', 'UK', 'EU', 'Japan'],
+                population: '144M',
+                capital: 'Moscow',
+                region: 'Europe/Asia',
+                description: 'Energy superpower with significant military and geopolitical influence'
+            },
+            'Brazil': {
+                flag: '🇧🇷',
+                gdp: { rank: 9, value: '$2.1T' },
+                gdpPerCapita: { rank: 82, value: '$9,200' },
+                happinessIndex: { rank: 67, score: 5.9 },
+                allies: ['USA', 'Argentina', 'Chile'],
+                foes: [],
+                population: '215M',
+                capital: 'Brasília',
+                region: 'South America',
+                description: 'Largest economy in Latin America with rich natural resources'
+            },
+            'Canada': {
+                flag: '🇨🇦',
+                gdp: { rank: 10, value: '$2.1T' },
+                gdpPerCapita: { rank: 15, value: '$54,700' },
+                happinessIndex: { rank: 14, score: 7.2 },
+                allies: ['USA', 'UK', 'Australia'],
+                foes: [],
+                population: '39M',
+                capital: 'Ottawa',
+                region: 'North America',
+                description: 'High quality of life with diverse economy and natural resources'
+            },
+            'South Korea': {
+                flag: '🇰🇷',
+                gdp: { rank: 12, value: '$1.8T' },
+                gdpPerCapita: { rank: 29, value: '$32,400' },
+                happinessIndex: { rank: 59, score: 5.8 },
+                allies: ['USA', 'Japan'],
+                foes: ['North Korea', 'China'],
+                population: '52M',
+                capital: 'Seoul',
+                region: 'East Asia',
+                description: 'Tech leader in semiconductors and smartphones with vibrant culture'
+            },
+            'Australia': {
+                flag: '🇦🇺',
+                gdp: { rank: 13, value: '$1.7T' },
+                gdpPerCapita: { rank: 10, value: '$64,600' },
+                happinessIndex: { rank: 12, score: 7.2 },
+                allies: ['USA', 'UK', 'Japan'],
+                foes: ['China'],
+                population: '26M',
+                capital: 'Canberra',
+                region: 'Oceania',
+                description: 'Prosperous nation with high living standards and natural wealth'
+            },
+            'Mexico': {
+                flag: '🇲🇽',
+                gdp: { rank: 15, value: '$1.3T' },
+                gdpPerCapita: { rank: 90, value: '$9,800' },
+                happinessIndex: { rank: 31, score: 6.6 },
+                allies: ['USA', 'Canada'],
+                foes: [],
+                population: '128M',
+                capital: 'Mexico City',
+                region: 'North America',
+                description: 'Growing economy with strategic trade partnerships and rich culture'
+            },
+            'Italy': {
+                flag: '🇮🇹',
+                gdp: { rank: 8, value: '$2.0T' },
+                gdpPerCapita: { rank: 28, value: '$33,800' },
+                happinessIndex: { rank: 28, score: 6.8 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '58M',
+                capital: 'Rome',
+                region: 'Europe',
+                description: 'Cultural and historical powerhouse with strong fashion and food industries'
+            },
+            'Spain': {
+                flag: '🇪🇸',
+                gdp: { rank: 14, value: '$1.4T' },
+                gdpPerCapita: { rank: 32, value: '$30,100' },
+                happinessIndex: { rank: 26, score: 6.8 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '47M',
+                capital: 'Madrid',
+                region: 'Europe',
+                description: 'Mediterranean powerhouse with tourism and renewable energy sectors'
+            },
+            'Egypt': {
+                flag: '🇪🇬',
+                gdp: { rank: 32, value: '$476B' },
+                gdpPerCapita: { rank: 112, value: '$4,500' },
+                happinessIndex: { rank: 115, score: 5.3 },
+                allies: ['USA', 'Saudi Arabia'],
+                foes: ['Israel'],
+                population: '104M',
+                capital: 'Cairo',
+                region: 'Africa',
+                description: 'Ancient civilization controlling crucial Suez Canal trade route'
+            },
+            'Saudi Arabia': {
+                flag: '🇸🇦',
+                gdp: { rank: 18, value: '$1.2T' },
+                gdpPerCapita: { rank: 30, value: '$36,200' },
+                happinessIndex: { rank: 76, score: 5.5 },
+                allies: ['USA', 'UAE', 'Egypt'],
+                foes: ['Iran'],
+                population: '36M',
+                capital: 'Riyadh',
+                region: 'Middle East',
+                description: 'Oil-rich nation with Vision 2030 diversification strategy'
+            },
+            'Nigeria': {
+                flag: '🇳🇬',
+                gdp: { rank: 33, value: '$470B' },
+                gdpPerCapita: { rank: 162, value: '$2,100' },
+                happinessIndex: { rank: 121, score: 5.1 },
+                allies: ['USA', 'UK'],
+                foes: [],
+                population: '223M',
+                capital: 'Abuja',
+                region: 'Africa',
+                description: 'Most populous African nation with growing tech and oil sectors'
+            },
+            'South Africa': {
+                flag: '🇿🇦',
+                gdp: { rank: 35, value: '$405B' },
+                gdpPerCapita: { rank: 118, value: '$6,700' },
+                happinessIndex: { rank: 79, score: 5.0 },
+                allies: ['BRICS', 'USA'],
+                foes: [],
+                population: '60M',
+                capital: 'Pretoria',
+                region: 'Africa',
+                description: 'Emerging market with strong mineral resources and tech potential'
+            },
+            'Argentina': {
+                flag: '🇦🇷',
+                gdp: { rank: 25, value: '$632B' },
+                gdpPerCapita: { rank: 75, value: '$14,100' },
+                happinessIndex: { rank: 18, score: 7.0 },
+                allies: ['Brazil', 'Chile'],
+                foes: [],
+                population: '46M',
+                capital: 'Buenos Aires',
+                region: 'South America',
+                description: 'Culturally vibrant nation with agricultural and tech sectors'
+            },
+            'Turkey': {
+                flag: '🇹🇷',
+                gdp: { rank: 21, value: '$905B' },
+                gdpPerCapita: { rank: 98, value: '$10,500' },
+                happinessIndex: { rank: 110, score: 5.2 },
+                allies: ['USA', 'NATO'],
+                foes: ['Armenia', 'Syria'],
+                population: '85M',
+                capital: 'Ankara',
+                region: 'Middle East/Europe',
+                description: 'Strategic bridge between Europe and Asia with growing economy'
+            },
+            'Iran': {
+                flag: '🇮🇷',
+                gdp: { rank: 27, value: '$597B' },
+                gdpPerCapita: { rank: 105, value: '$7,000' },
+                happinessIndex: { rank: 138, score: 4.9 },
+                allies: ['Russia', 'Syria', 'China'],
+                foes: ['USA', 'Saudi Arabia', 'Israel'],
+                population: '91M',
+                capital: 'Tehran',
+                region: 'Middle East',
+                description: 'Regional power with oil reserves and strategic geopolitical influence'
+            }
+        };
 
-    <div class="purchase-section">
-      <div class="total-row">
-        <span class="total-label">Total</span>
-        <span class="total-price" id="totalPrice">$0</span>
-      </div>
-      <button class="btn-primary" onclick="addToCart()">Add Outfit to Cart</button>
-      <button class="btn-secondary" onclick="addToWishlist()">
-        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Save to Wishlist
-      </button>
-    </div>
-  </div>
+        // ==================== CANVAS & MAP ====================
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        let scale = 1;
+        let panX = 0;
+        let panY = 0;
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        let selectedCountry = null;
 
-</main>
+        // Simple country regions (simplified for demonstration)
+        const countryRegions = {
+            'USA': { x: 150, y: 200, radius: 60, x2: 350, y2: 380 },
+            'Canada': { x: 150, y: 100, radius: 50, x2: 350, y2: 200 },
+            'Mexico': { x: 100, y: 270, radius: 40, x2: 200, y2: 350 },
+            'Brazil': { x: 280, y: 350, radius: 50, x2: 350, y2: 450 },
+            'Argentina': { x: 260, y: 450, radius: 45, x2: 320, y2: 520 },
+            'UK': { x: 500, y: 150, radius: 25, x2: 550, y2: 190 },
+            'France': { x: 520, y: 160, radius: 30, x2: 580, y2: 210 },
+            'Germany': { x: 540, y: 140, radius: 25, x2: 590, y2: 180 },
+            'Spain': { x: 480, y: 180, radius: 30, x2: 530, y2: 230 },
+            'Italy': { x: 560, y: 190, radius: 25, x2: 610, y2: 230 },
+            'Russia': { x: 650, y: 120, radius: 80, x2: 850, y2: 300 },
+            'China': { x: 720, y: 220, radius: 70, x2: 880, y2: 350 },
+            'Japan': { x: 830, y: 180, radius: 35, x2: 900, y2: 240 },
+            'South Korea': { x: 770, y: 170, radius: 20, x2: 810, y2: 200 },
+            'India': { x: 620, y: 320, radius: 55, x2: 720, y2: 420 },
+            'Saudi Arabia': { x: 580, y: 280, radius: 40, x2: 660, y2: 350 },
+            'Iran': { x: 600, y: 260, radius: 35, x2: 670, y2: 310 },
+            'Turkey': { x: 560, y: 220, radius: 30, x2: 620, y2: 270 },
+            'Egypt': { x: 530, y: 300, radius: 30, x2: 580, y2: 360 },
+            'Nigeria': { x: 480, y: 350, radius: 35, x2: 540, y2: 410 },
+            'South Africa': { x: 550, y: 450, radius: 40, x2: 620, y2: 520 },
+            'Australia': { x: 850, y: 450, radius: 50, x2: 950, y2: 530 }
+        };
 
-<div class="toast" id="toast"></div>
+        function resizeCanvas() {
+            const rect = document.querySelector('.map-container').getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            draw();
+        }
 
-<script>
-// ── DATA ──
-const catalog = {
-  tops: [
-    { id:'t1', name:'Linen Shirt', price:89, emoji:'👔', cats:['men','casual'], bg:'#c4a882', layer:'shirt' },
-    { id:'t2', name:'Silk Blouse', price:145, emoji:'👘', cats:['women','formal'], bg:'#f5f0eb', layer:'blouse' },
-    { id:'t3', name:'Classic Tee', price:42, emoji:'👕', cats:['all','casual'], bg:'#4a6fa5', layer:'tee' },
-    { id:'t4', name:'Striped Tee', price:58, emoji:'👕', cats:['all','casual'], bg:'#7a9e7e', layer:'tee' },
-    { id:'t5', name:'Turtleneck', price:98, emoji:'🧶', cats:['all','casual','formal'], bg:'#2c2c54', layer:'turtleneck' },
-    { id:'t6', name:'Crop Top', price:65, emoji:'👙', cats:['women','casual'], bg:'#c0392b', layer:'crop' },
-  ],
-  bottoms: [
-    { id:'b1', name:'Slim Jeans', price:120, emoji:'👖', cats:['all','casual'], bg:'#4a6fa5', layer:'jeans' },
-    { id:'b2', name:'Wide Trousers', price:145, emoji:'👖', cats:['all','formal'], bg:'#1a1a18', layer:'trousers' },
-    { id:'b3', name:'Mini Skirt', price:85, emoji:'🩱', cats:['women','casual'], bg:'#c4a882', layer:'skirt' },
-    { id:'b4', name:'Midi Skirt', price:110, emoji:'👗', cats:['women','formal'], bg:'#8b6f5e', layer:'midi' },
-    { id:'b5', name:'Chino Pants', price:98, emoji:'👖', cats:['men','casual','formal'], bg:'#c4a882', layer:'chino' },
-    { id:'b6', name:'Cargo Pants', price:115, emoji:'👖', cats:['men','casual'], bg:'#7a9e7e', layer:'cargo' },
-  ],
-  outer: [
-    { id:'o1', name:'Trench Coat', price:295, emoji:'🧥', cats:['all','formal'], bg:'#c4a882', layer:'trench' },
-    { id:'o2', name:'Denim Jacket', price:185, emoji:'🧥', cats:['all','casual'], bg:'#4a6fa5', layer:'denim' },
-    { id:'o3', name:'Wool Blazer', price:340, emoji:'🥼', cats:['all','formal'], bg:'#1a1a18', layer:'blazer' },
-    { id:'o4', name:'Puffer Vest', price:165, emoji:'🦺', cats:['all','casual'], bg:'#2c2c54', layer:'vest' },
-    { id:'o5', name:'Leather Jacket', price:420, emoji:'🧥', cats:['all','casual'], bg:'#3d2b1f', layer:'leather' },
-    { id:'o6', name:'Knit Cardigan', price:145, emoji:'🧶', cats:['all','casual'], bg:'#7a9e7e', layer:'cardigan' },
-  ]
-};
+        function draw() {
+            ctx.fillStyle = '#0a1428';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-// ── STATE ──
-let state = {
-  section: 'tops',
-  category: 'all',
-  selected: { top: null, bottom: null, outer: null },
-  zoom: 1,
-  rotation: 0,
-  view: 'front',
-  color: 'Noir',
-  size: 'M',
-  cartCount: 0
-};
+            ctx.save();
+            ctx.translate(canvas.width / 2 + panX, canvas.height / 2 + panY);
+            ctx.scale(scale, scale);
 
-// ── RENDER GRID ──
-function renderGrid() {
-  const grid = document.getElementById('clothingGrid');
-  grid.innerHTML = '';
-  const items = catalog[state.section] || [];
-  const filtered = state.category === 'all'
-    ? items
-    : items.filter(i => i.cats.includes(state.category));
+            // Draw grid
+            drawGrid();
 
-  filtered.forEach((item, idx) => {
-    const slotKey = state.section === 'tops' ? 'top' : state.section === 'bottoms' ? 'bottom' : 'outer';
-    const isSelected = state.selected[slotKey]?.id === item.id;
-    const card = document.createElement('div');
-    card.className = `clothing-card card-enter${isSelected ? ' selected' : ''}`;
-    card.style.animationDelay = `${idx * 0.05}s`;
-    card.innerHTML = `
-      <div class="card-visual" style="background:${item.bg}20">
-        <span>${item.emoji}</span>
-      </div>
-      <div class="card-info">
-        <div class="card-name">${item.name}</div>
-        <div class="card-price">$${item.price}</div>
-      </div>`;
-    card.onclick = () => selectItem(item, slotKey);
-    grid.appendChild(card);
-  });
-}
+            // Draw countries
+            Object.entries(countryRegions).forEach(([country, region]) => {
+                drawCountry(country, region);
+            });
 
-function selectItem(item, slot) {
-  if (state.selected[slot]?.id === item.id) {
-    state.selected[slot] = null;
-  } else {
-    state.selected[slot] = item;
-  }
-  renderGrid();
-  updateDetailPanel();
-  renderModel();
-}
+            ctx.restore();
+        }
 
-// ── DETAIL PANEL ──
-function updateDetailPanel() {
-  const { top, bottom, outer } = state.selected;
-  const pieces = [
-    { slot:'top', emoji:'👕', type:'Top', item: top },
-    { slot:'bottom', emoji:'👖', type:'Bottom', item: bottom },
-    { slot:'outer', emoji:'🧥', type:'Outerwear', item: outer },
-  ];
+        function drawGrid() {
+            ctx.strokeStyle = 'rgba(0, 212, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for (let i = -400; i < 400; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, -300);
+                ctx.lineTo(i, 300);
+                ctx.stroke();
 
-  pieces.forEach(p => {
-    const el = document.getElementById(`slot-${p.slot}`);
-    if (p.item) {
-      el.className = 'piece-row';
-      el.innerHTML = `
-        <div class="piece-emoji">${p.item.emoji}</div>
-        <div class="piece-info">
-          <div class="piece-type">${p.type}</div>
-          <div class="piece-name">${p.item.name}</div>
-        </div>
-        <div class="piece-price">$${p.item.price}</div>
-        <button class="remove-piece" onclick="removeSlot('${p.slot}')">✕</button>`;
-    } else {
-      el.className = 'piece-row empty';
-      el.innerHTML = `
-        <div class="piece-emoji">${p.emoji}</div>
-        <div class="piece-info">
-          <div class="piece-type">${p.type}</div>
-          <div class="piece-name">Select ${p.type.toLowerCase()}</div>
-        </div>`;
-    }
-  });
+                ctx.beginPath();
+                ctx.moveTo(-400, i);
+                ctx.lineTo(400, i);
+                ctx.stroke();
+            }
+        }
 
-  const total = (top?.price||0) + (bottom?.price||0) + (outer?.price||0);
-  document.getElementById('totalPrice').textContent = `$${total}`;
+        function drawCountry(name, region) {
+            const isSelected = selectedCountry === name;
+            
+            // Draw country rectangle
+            ctx.fillStyle = isSelected ? 'rgba(0, 255, 136, 0.3)' : 'rgba(0, 212, 255, 0.15)';
+            ctx.strokeStyle = isSelected ? '#00ff88' : 'rgba(0, 212, 255, 0.5)';
+            ctx.lineWidth = isSelected ? 3 : 2;
 
-  const names = [top?.name, outer?.name].filter(Boolean);
-  if (names.length) {
-    document.getElementById('outfitTitle').innerHTML = names.join(' &<br>') + (bottom ? `<br>${bottom.name}` : '');
-  } else if (bottom) {
-    document.getElementById('outfitTitle').textContent = bottom.name;
-  } else {
-    document.getElementById('outfitTitle').innerHTML = 'Start Building<br>Your Outfit';
-  }
-}
+            ctx.fillRect(
+                region.x - region.radius,
+                region.y - region.radius,
+                region.radius * 2,
+                region.radius * 2
+            );
+            ctx.strokeRect(
+                region.x - region.radius,
+                region.y - region.radius,
+                region.radius * 2,
+                region.radius * 2
+            );
 
-function removeSlot(slot) {
-  state.selected[slot] = null;
-  updateDetailPanel();
-  renderModel();
-  renderGrid();
-}
+            // Draw label
+            ctx.fillStyle = isSelected ? '#00ff88' : 'rgba(224, 224, 224, 0.8)';
+            ctx.font = isSelected ? 'bold 12px Arial' : '11px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(name, region.x, region.y);
 
-// ── SVG MODEL ──
-function renderModel() {
-  const svg = document.getElementById('modelSVG');
-  const { top, bottom, outer } = state.selected;
-  const view = state.view;
+            // Draw flag
+            const flagSize = isSelected ? 14 : 12;
+            ctx.font = `${flagSize}px Arial`;
+            ctx.fillText(countryData[name].flag, region.x, region.y - 15);
+        }
 
-  const skinTone = '#d4a07a';
-  const hairColor = '#2c1a0e';
-  const bodyColor = '#c8956a';
+        function getCountryAtMouse(x, y) {
+            // Convert mouse position to canvas coordinates
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (x - rect.left - canvas.width / 2 - panX) / scale;
+            const mouseY = (y - rect.top - canvas.height / 2 - panY) / scale;
 
-  // Colors
-  const topColor = top ? top.bg : '#e8e3dc';
-  const bottomColor = bottom ? bottom.bg : '#d4cfc8';
-  const outerColor = outer ? outer.bg : null;
+            for (const [country, region] of Object.entries(countryRegions)) {
+                const distance = Math.sqrt(
+                    Math.pow(mouseX - region.x, 2) + Math.pow(mouseY - region.y, 2)
+                );
+                if (distance < region.radius) {
+                    return country;
+                }
+            }
+            return null;
+        }
 
-  let content = '';
+        // ==================== EVENT LISTENERS ====================
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                panX += e.clientX - dragStart.x;
+                panY += e.clientY - dragStart.y;
+                dragStart = { x: e.clientX, y: e.clientY };
+                draw();
+            } else {
+                const country = getCountryAtMouse(e.clientX, e.clientY);
+                if (country) {
+                    canvas.style.cursor = 'pointer';
+                    showTooltip(e.clientX, e.clientY, country);
+                } else {
+                    canvas.style.cursor = 'grab';
+                    hideTooltip();
+                }
+            }
+        });
 
-  if (view === 'front') {
-    content = `
-      <!-- Shadow -->
-      <ellipse cx="110" cy="505" rx="50" ry="8" fill="rgba(0,0,0,0.08)"/>
+        canvas.addEventListener('mousedown', (e) => {
+            const country = getCountryAtMouse(e.clientX, e.clientY);
+            if (country && !isDragging) {
+                selectCountry(country);
+            } else if (!country) {
+                isDragging = true;
+                dragStart = { x: e.clientX, y: e.clientY };
+            }
+        });
 
-      <!-- Legs -->
-      <rect x="78" y="310" width="24" height="145" rx="8" fill="${bottomColor}"/>
-      <rect x="118" y="310" width="24" height="145" rx="8" fill="${bottomColor}"/>
-      <!-- Shoes -->
-      <ellipse cx="90" cy="457" rx="16" ry="7" fill="#2c1a0e"/>
-      <ellipse cx="130" cy="457" rx="16" ry="7" fill="#2c1a0e"/>
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
 
-      <!-- Body / Torso -->
-      <rect x="72" y="175" width="76" height="140" rx="10" fill="${topColor}"/>
+        canvas.addEventListener('mouseleave', () => {
+            isDragging = false;
+            hideTooltip();
+            canvas.style.cursor = 'grab';
+        });
 
-      <!-- Neck -->
-      <rect x="100" y="145" width="20" height="38" rx="6" fill="${skinTone}"/>
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            scale = Math.max(0.5, Math.min(scale * zoomFactor, 3));
+            draw();
+        });
 
-      <!-- Head -->
-      <ellipse cx="110" cy="115" rx="38" ry="45" fill="${skinTone}"/>
-      <!-- Hair -->
-      <ellipse cx="110" cy="82" rx="38" ry="22" fill="${hairColor}"/>
-      <rect x="72" y="82" width="8" height="40" rx="4" fill="${hairColor}"/>
-      <rect x="140" y="82" width="8" height="40" rx="4" fill="${hairColor}"/>
-      <!-- Face -->
-      <ellipse cx="100" cy="115" rx="4" ry="5" fill="#5c3d2e" opacity="0.7"/>
-      <ellipse cx="120" cy="115" rx="4" ry="5" fill="#5c3d2e" opacity="0.7"/>
-      <path d="M100 132 Q110 140 120 132" stroke="#8b5e4a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        // Control buttons
+        document.getElementById('zoomInBtn').addEventListener('click', () => {
+            scale = Math.min(scale * 1.2, 3);
+            draw();
+        });
 
-      <!-- Arms -->
-      <rect x="42" y="178" width="28" height="100" rx="10" fill="${topColor}"/>
-      <rect x="150" y="178" width="28" height="100" rx="10" fill="${topColor}"/>
-      <!-- Hands -->
-      <ellipse cx="56" cy="285" rx="12" ry="15" fill="${skinTone}"/>
-      <ellipse cx="164" cy="285" rx="12" ry="15" fill="${skinTone}"/>
+        document.getElementById('zoomOutBtn').addEventListener('click', () => {
+            scale = Math.max(scale / 1.2, 0.5);
+            draw();
+        });
 
-      <!-- Collar detail -->
-      <path d="M95 175 Q110 195 125 175" stroke="${topColor === '#f5f0eb' ? '#ccc' : 'rgba(255,255,255,0.3)'}" stroke-width="2" fill="none"/>
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            scale = 1;
+            panX = 0;
+            panY = 0;
+            selectedCountry = null;
+            draw();
+            document.getElementById('infoPanelContent').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🌐</div>
+                    <p>Click on a country to view detailed information</p>
+                </div>
+            `;
+        });
 
-      ${outerColor ? `
-      <!-- Outer layer -->
-      <rect x="60" y="172" width="100" height="148" rx="12" fill="${outerColor}" opacity="0.92"/>
-      <rect x="60" y="172" width="12" height="148" rx="4" fill="${outerColor}"/>
-      <rect x="148" y="172" width="12" height="148" rx="4" fill="${outerColor}"/>
-      <!-- Lapels -->
-      <path d="M100 172 L72 200 L100 215" fill="${bodyColor}" opacity="0.3"/>
-      <path d="M120 172 L148 200 L120 215" fill="${bodyColor}" opacity="0.3"/>
-      <!-- Outer arms -->
-      <rect x="38" y="175" width="32" height="108" rx="10" fill="${outerColor}" opacity="0.95"/>
-      <rect x="150" y="175" width="32" height="108" rx="10" fill="${outerColor}" opacity="0.95"/>
-      <!-- Button line -->
-      <line x1="110" y1="200" x2="110" y2="316" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,4"/>
-      ` : ''}
-    `;
-  } else if (view === 'side') {
-    content = `
-      <!-- Shadow -->
-      <ellipse cx="110" cy="505" rx="30" ry="7" fill="rgba(0,0,0,0.08)"/>
-      <!-- Leg side -->
-      <rect x="95" y="310" width="25" height="145" rx="8" fill="${bottomColor}"/>
-      <!-- Shoe side -->
-      <path d="M90 455 Q108 455 125 450 L125 462 Q108 467 90 462 Z" fill="#2c1a0e"/>
-      <!-- Torso side -->
-      <rect x="88" y="175" width="45" height="140" rx="10" fill="${topColor}"/>
-      <!-- Neck side -->
-      <rect x="100" y="145" width="18" height="38" rx="6" fill="${skinTone}"/>
-      <!-- Head side -->
-      <ellipse cx="112" cy="115" rx="32" ry="44" fill="${skinTone}"/>
-      <ellipse cx="112" cy="82" rx="28" ry="20" fill="${hairColor}"/>
-      <!-- Face profile -->
-      <ellipse cx="128" cy="108" rx="3" ry="4" fill="#5c3d2e" opacity="0.6"/>
-      <path d="M125 127 L135 124" stroke="#8b5e4a" stroke-width="1.5" stroke-linecap="round"/>
-      <!-- Arm side -->
-      <rect x="58" y="178" width="26" height="95" rx="10" fill="${topColor}"/>
-      <ellipse cx="71" cy="279" rx="11" ry="13" fill="${skinTone}"/>
-      ${outerColor ? `
-      <rect x="83" y="172" width="58" height="148" rx="10" fill="${outerColor}" opacity="0.92"/>
-      <rect x="50" y="175" width="30" height="108" rx="10" fill="${outerColor}" opacity="0.95"/>
-      ` : ''}
-    `;
-  } else {
-    // Back view
-    content = `
-      <!-- Shadow -->
-      <ellipse cx="110" cy="505" rx="50" ry="8" fill="rgba(0,0,0,0.08)"/>
-      <!-- Legs back -->
-      <rect x="78" y="310" width="24" height="145" rx="8" fill="${bottomColor}"/>
-      <rect x="118" y="310" width="24" height="145" rx="8" fill="${bottomColor}"/>
-      <ellipse cx="90" cy="457" rx="16" ry="7" fill="#2c1a0e"/>
-      <ellipse cx="130" cy="457" rx="16" ry="7" fill="#2c1a0e"/>
-      <!-- Back torso -->
-      <rect x="72" y="175" width="76" height="140" rx="10" fill="${topColor}"/>
-      <!-- Neck back -->
-      <rect x="100" y="148" width="20" height="34" rx="6" fill="${skinTone}"/>
-      <!-- Head back -->
-      <ellipse cx="110" cy="115" rx="38" ry="45" fill="${hairColor}"/>
-      <!-- Back arms -->
-      <rect x="42" y="178" width="28" height="100" rx="10" fill="${topColor}"/>
-      <rect x="150" y="178" width="28" height="100" rx="10" fill="${topColor}"/>
-      <ellipse cx="56" cy="285" rx="12" ry="15" fill="${skinTone}"/>
-      <ellipse cx="164" cy="285" rx="12" ry="15" fill="${skinTone}"/>
-      ${outerColor ? `
-      <rect x="60" y="172" width="100" height="148" rx="12" fill="${outerColor}" opacity="0.92"/>
-      <rect x="38" y="175" width="32" height="108" rx="10" fill="${outerColor}" opacity="0.95"/>
-      <rect x="150" y="175" width="32" height="108" rx="10" fill="${outerColor}" opacity="0.95"/>
-      ` : ''}
-    `;
-  }
+        // ==================== TOOLTIP ====================
+        function showTooltip(x, y, country) {
+            const tooltip = document.getElementById('tooltip');
+            const data = countryData[country];
+            
+            document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
+            document.getElementById('tooltipInfo').textContent = data.description;
 
-  svg.innerHTML = content;
+            tooltip.style.left = (x + 15) + 'px';
+            tooltip.style.top = (y - 20) + 'px';
+            tooltip.classList.add('active');
+        }
 
-  // Animate
-  const wrapper = document.getElementById('modelWrapper');
-  wrapper.classList.remove('model-change');
-  void wrapper.offsetWidth;
-  wrapper.classList.add('model-change');
-}
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('active');
+        }
 
-// ── CONTROLS ──
-function showSection(btn, section) {
-  document.querySelectorAll('.section-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state.section = section;
-  renderGrid();
-}
+        // ==================== COUNTRY SELECTION ====================
+        function selectCountry(country) {
+            selectedCountry = country;
+            const data = countryData[country];
 
-function filterCat(btn, cat) {
-  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state.category = cat;
-  renderGrid();
-}
+            // Update header
+            document.getElementById('currentCountry').textContent = `${data.flag} ${country.toUpperCase()}`;
 
-function setView(btn, view) {
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state.view = view;
-  renderModel();
-}
+            // Update info panel
+            let html = `
+                <div class="panel-header">
+                    <div class="panel-title">${data.flag} ${country}</div>
+                    <div class="panel-subtitle">${data.region}</div>
+                </div>
 
-let currentScale = 1;
-function zoomModel(factor) {
-  currentScale = Math.max(0.6, Math.min(1.6, currentScale * factor));
-  document.getElementById('modelWrapper').style.transform = `scale(${currentScale})`;
-}
+                <div class="info-section">
+                    <div class="section-title">📊 Economic Indicators</div>
+                    <div class="rank-item">
+                        <span class="rank-label">GDP Rank</span>
+                        <span class="rank-value">#${data.gdp.rank} ${data.gdp.value}</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-label">GDP Per Capita</span>
+                        <span class="rank-value">#${data.gdpPerCapita.rank}</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-light); padding: 0.5rem 0.8rem; text-align: center; background: rgba(0, 212, 255, 0.05); border-radius: 4px;">
+                        ${data.gdpPerCapita.value}
+                    </div>
+                </div>
 
-let currentRotation = 0;
-function rotateModel(dir) {
-  currentRotation += dir * 15;
-  document.getElementById('modelWrapper').style.transform =
-    `scale(${currentScale}) rotateY(${currentRotation}deg)`;
-}
+                <div class="info-section">
+                    <div class="section-title">😊 Quality of Life</div>
+                    <div class="rank-item">
+                        <span class="rank-label">Happiness Index</span>
+                        <span class="rank-value">#${data.happinessIndex.rank}</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--success); padding: 0.5rem 0.8rem; text-align: center; background: rgba(0, 255, 136, 0.1); border-radius: 4px; font-weight: 700;">
+                        ${data.happinessIndex.score}/10.0
+                    </div>
+                </div>
 
-function selectColor(swatch, name) {
-  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-  swatch.classList.add('active');
-  state.color = name;
-  document.getElementById('colorName').textContent = name;
-}
+                <div class="info-section">
+                    <div class="section-title">👥 Basic Info</div>
+                    <div class="rank-item">
+                        <span class="rank-label">Population</span>
+                        <span class="rank-value">${data.population}</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-label">Capital</span>
+                        <span class="rank-value">${data.capital}</span>
+                    </div>
+                </div>
+            `;
 
-function selectSize(btn, size) {
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state.size = size;
-  document.getElementById('sizeName').textContent = size;
-}
+            if (data.allies.length > 0) {
+                html += `
+                    <div class="info-section">
+                        <div class="section-title">🤝 Allies</div>
+                        <div class="relations-list">
+                            ${data.allies.map(ally => `<span class="relation-tag ally">${ally}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+            if (data.foes.length > 0) {
+                html += `
+                    <div class="info-section">
+                        <div class="section-title">⚔️ Foes</div>
+                        <div class="relations-list">
+                            ${data.foes.map(foe => `<span class="relation-tag foe">${foe}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
 
-function addToCart() {
-  const { top, bottom, outer } = state.selected;
-  if (!top && !bottom && !outer) {
-    showToast('Select at least one item first.');
-    return;
-  }
-  state.cartCount++;
-  document.getElementById('cartCount').textContent = state.cartCount;
-  showToast('✓ Outfit added to cart');
-}
+            document.getElementById('infoPanelContent').innerHTML = html;
+            draw();
+            hideTooltip();
+        }
 
-function addToWishlist() {
-  const { top, bottom, outer } = state.selected;
-  if (!top && !bottom && !outer) {
-    showToast('Select at least one item first.');
-    return;
-  }
-  showToast('♥ Saved to wishlist');
-}
-
-// ── INIT ──
-renderGrid();
-renderModel();
-</script>
+        // Initialize
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+    </script>
 </body>
 </html>
