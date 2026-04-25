@@ -1,4 +1,3 @@
-<h1>HELLO I CHANGED THIS</h1>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -401,7 +400,7 @@
     <div class="container">
         <!-- Map Area -->
         <div class="map-container">
-            <canvas id="mapCanvas"></canvas>
+            <svg id="mapSVG"></svg>
             <div class="controls">
                 <button class="control-btn" id="resetBtn" title="Reset View">⟳</button>
                 <button class="control-btn" id="zoomInBtn" title="Zoom In">+</button>
@@ -427,10 +426,13 @@
         <div class="tooltip-hint">Click for details</div>
     </div>
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
+
     <script>
-        // ==================== COUNTRY DATA ====================
+        // ==================== COMPREHENSIVE COUNTRY DATABASE ====================
         const countryData = {
-            'USA': {
+            'United States': {
                 flag: '🇺🇸',
                 gdp: { rank: 1, value: '$27.4T' },
                 gdpPerCapita: { rank: 6, value: '$82,500' },
@@ -439,8 +441,7 @@
                 foes: ['China', 'Russia', 'Iran', 'North Korea'],
                 population: '331M',
                 capital: 'Washington DC',
-                region: 'North America',
-                description: 'World\'s largest economy with strong tech and military power'
+                region: 'North America'
             },
             'China': {
                 flag: '🇨🇳',
@@ -451,8 +452,7 @@
                 foes: ['USA', 'Japan', 'India', 'Australia'],
                 population: '1.4B',
                 capital: 'Beijing',
-                region: 'East Asia',
-                description: 'Emerging superpower with massive population and manufacturing capacity'
+                region: 'East Asia'
             },
             'Japan': {
                 flag: '🇯🇵',
@@ -463,8 +463,7 @@
                 foes: ['China', 'Russia'],
                 population: '125M',
                 capital: 'Tokyo',
-                region: 'East Asia',
-                description: 'Technological leader with advanced manufacturing and robotics'
+                region: 'East Asia'
             },
             'Germany': {
                 flag: '🇩🇪',
@@ -475,10 +474,9 @@
                 foes: [],
                 population: '83M',
                 capital: 'Berlin',
-                region: 'Europe',
-                description: 'Industrial powerhouse and automotive leader of Europe'
+                region: 'Europe'
             },
-            'UK': {
+            'United Kingdom': {
                 flag: '🇬🇧',
                 gdp: { rank: 5, value: '$3.3T' },
                 gdpPerCapita: { rank: 20, value: '$46,200' },
@@ -487,8 +485,7 @@
                 foes: [],
                 population: '67M',
                 capital: 'London',
-                region: 'Europe',
-                description: 'Financial hub with strong cultural influence globally'
+                region: 'Europe'
             },
             'France': {
                 flag: '🇫🇷',
@@ -499,8 +496,7 @@
                 foes: [],
                 population: '68M',
                 capital: 'Paris',
-                region: 'Europe',
-                description: 'Cultural center of Europe with strong wine and luxury industries'
+                region: 'Europe'
             },
             'India': {
                 flag: '🇮🇳',
@@ -511,8 +507,7 @@
                 foes: ['Pakistan', 'China'],
                 population: '1.4B',
                 capital: 'New Delhi',
-                region: 'South Asia',
-                description: 'World\'s fastest-growing major economy with IT services leadership'
+                region: 'South Asia'
             },
             'Russia': {
                 flag: '🇷🇺',
@@ -523,8 +518,7 @@
                 foes: ['USA', 'UK', 'EU', 'Japan'],
                 population: '144M',
                 capital: 'Moscow',
-                region: 'Europe/Asia',
-                description: 'Energy superpower with significant military and geopolitical influence'
+                region: 'Europe/Asia'
             },
             'Brazil': {
                 flag: '🇧🇷',
@@ -535,8 +529,7 @@
                 foes: [],
                 population: '215M',
                 capital: 'Brasília',
-                region: 'South America',
-                description: 'Largest economy in Latin America with rich natural resources'
+                region: 'South America'
             },
             'Canada': {
                 flag: '🇨🇦',
@@ -547,8 +540,7 @@
                 foes: [],
                 population: '39M',
                 capital: 'Ottawa',
-                region: 'North America',
-                description: 'High quality of life with diverse economy and natural resources'
+                region: 'North America'
             },
             'South Korea': {
                 flag: '🇰🇷',
@@ -559,8 +551,7 @@
                 foes: ['North Korea', 'China'],
                 population: '52M',
                 capital: 'Seoul',
-                region: 'East Asia',
-                description: 'Tech leader in semiconductors and smartphones with vibrant culture'
+                region: 'East Asia'
             },
             'Australia': {
                 flag: '🇦🇺',
@@ -571,8 +562,7 @@
                 foes: ['China'],
                 population: '26M',
                 capital: 'Canberra',
-                region: 'Oceania',
-                description: 'Prosperous nation with high living standards and natural wealth'
+                region: 'Oceania'
             },
             'Mexico': {
                 flag: '🇲🇽',
@@ -583,8 +573,7 @@
                 foes: [],
                 population: '128M',
                 capital: 'Mexico City',
-                region: 'North America',
-                description: 'Growing economy with strategic trade partnerships and rich culture'
+                region: 'North America'
             },
             'Italy': {
                 flag: '🇮🇹',
@@ -595,8 +584,7 @@
                 foes: [],
                 population: '58M',
                 capital: 'Rome',
-                region: 'Europe',
-                description: 'Cultural and historical powerhouse with strong fashion and food industries'
+                region: 'Europe'
             },
             'Spain': {
                 flag: '🇪🇸',
@@ -607,8 +595,7 @@
                 foes: [],
                 population: '47M',
                 capital: 'Madrid',
-                region: 'Europe',
-                description: 'Mediterranean powerhouse with tourism and renewable energy sectors'
+                region: 'Europe'
             },
             'Egypt': {
                 flag: '🇪🇬',
@@ -619,8 +606,7 @@
                 foes: ['Israel'],
                 population: '104M',
                 capital: 'Cairo',
-                region: 'Africa',
-                description: 'Ancient civilization controlling crucial Suez Canal trade route'
+                region: 'Africa'
             },
             'Saudi Arabia': {
                 flag: '🇸🇦',
@@ -631,8 +617,7 @@
                 foes: ['Iran'],
                 population: '36M',
                 capital: 'Riyadh',
-                region: 'Middle East',
-                description: 'Oil-rich nation with Vision 2030 diversification strategy'
+                region: 'Middle East'
             },
             'Nigeria': {
                 flag: '🇳🇬',
@@ -643,8 +628,7 @@
                 foes: [],
                 population: '223M',
                 capital: 'Abuja',
-                region: 'Africa',
-                description: 'Most populous African nation with growing tech and oil sectors'
+                region: 'Africa'
             },
             'South Africa': {
                 flag: '🇿🇦',
@@ -655,8 +639,7 @@
                 foes: [],
                 population: '60M',
                 capital: 'Pretoria',
-                region: 'Africa',
-                description: 'Emerging market with strong mineral resources and tech potential'
+                region: 'Africa'
             },
             'Argentina': {
                 flag: '🇦🇷',
@@ -667,8 +650,7 @@
                 foes: [],
                 population: '46M',
                 capital: 'Buenos Aires',
-                region: 'South America',
-                description: 'Culturally vibrant nation with agricultural and tech sectors'
+                region: 'South America'
             },
             'Turkey': {
                 flag: '🇹🇷',
@@ -679,8 +661,7 @@
                 foes: ['Armenia', 'Syria'],
                 population: '85M',
                 capital: 'Ankara',
-                region: 'Middle East/Europe',
-                description: 'Strategic bridge between Europe and Asia with growing economy'
+                region: 'Middle East/Europe'
             },
             'Iran': {
                 flag: '🇮🇷',
@@ -691,222 +672,364 @@
                 foes: ['USA', 'Saudi Arabia', 'Israel'],
                 population: '91M',
                 capital: 'Tehran',
-                region: 'Middle East',
-                description: 'Regional power with oil reserves and strategic geopolitical influence'
+                region: 'Middle East'
+            },
+            'Indonesia': {
+                flag: '🇮🇩',
+                gdp: { rank: 16, value: '$1.2T' },
+                gdpPerCapita: { rank: 125, value: '$4,250' },
+                happinessIndex: { rank: 71, score: 5.9 },
+                allies: ['USA', 'Japan'],
+                foes: [],
+                population: '277M',
+                capital: 'Jakarta',
+                region: 'Southeast Asia'
+            },
+            'Pakistan': {
+                flag: '🇵🇰',
+                gdp: { rank: 27, value: '$595B' },
+                gdpPerCapita: { rank: 151, value: '$2,650' },
+                happinessIndex: { rank: 140, score: 4.9 },
+                allies: ['China', 'Saudi Arabia'],
+                foes: ['India'],
+                population: '240M',
+                capital: 'Islamabad',
+                region: 'South Asia'
+            },
+            'Nigeria': {
+                flag: '🇳🇬',
+                gdp: { rank: 33, value: '$470B' },
+                gdpPerCapita: { rank: 162, value: '$2,100' },
+                happinessIndex: { rank: 121, score: 5.1 },
+                allies: ['USA', 'UK'],
+                foes: [],
+                population: '223M',
+                capital: 'Abuja',
+                region: 'Africa'
+            },
+            'Thailand': {
+                flag: '🇹🇭',
+                gdp: { rank: 28, value: '$475B' },
+                gdpPerCapita: { rank: 90, value: '$6,850' },
+                happinessIndex: { rank: 91, score: 5.4 },
+                allies: ['USA', 'Japan'],
+                foes: [],
+                population: '72M',
+                capital: 'Bangkok',
+                region: 'Southeast Asia'
+            },
+            'Vietnam': {
+                flag: '🇻🇳',
+                gdp: { rank: 30, value: '$429B' },
+                gdpPerCapita: { rank: 128, value: '$4,340' },
+                happinessIndex: { rank: 95, score: 5.5 },
+                allies: ['USA', 'China'],
+                foes: [],
+                population: '99M',
+                capital: 'Hanoi',
+                region: 'Southeast Asia'
+            },
+            'Philippines': {
+                flag: '🇵🇭',
+                gdp: { rank: 31, value: '$505B' },
+                gdpPerCapita: { rank: 140, value: '$4,580' },
+                happinessIndex: { rank: 60, score: 5.9 },
+                allies: ['USA', 'Japan'],
+                foes: [],
+                population: '120M',
+                capital: 'Manila',
+                region: 'Southeast Asia'
+            },
+            'Malaysia': {
+                flag: '🇲🇾',
+                gdp: { rank: 34, value: '$430B' },
+                gdpPerCapita: { rank: 85, value: '$13,500' },
+                happinessIndex: { rank: 85, score: 5.7 },
+                allies: ['USA', 'China'],
+                foes: [],
+                population: '34M',
+                capital: 'Kuala Lumpur',
+                region: 'Southeast Asia'
+            },
+            'Greece': {
+                flag: '🇬🇷',
+                gdp: { rank: 37, value: '$219B' },
+                gdpPerCapita: { rank: 42, value: '$20,900' },
+                happinessIndex: { rank: 58, score: 6.0 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '10.5M',
+                capital: 'Athens',
+                region: 'Europe'
+            },
+            'Portugal': {
+                flag: '🇵🇹',
+                gdp: { rank: 41, value: '$287B' },
+                gdpPerCapita: { rank: 37, value: '$26,600' },
+                happinessIndex: { rank: 31, score: 6.6 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '10.4M',
+                capital: 'Lisbon',
+                region: 'Europe'
+            },
+            'Netherlands': {
+                flag: '🇳🇱',
+                gdp: { rank: 19, value: '$1.1T' },
+                gdpPerCapita: { rank: 7, value: '$59,300' },
+                happinessIndex: { rank: 5, score: 7.4 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '17.6M',
+                capital: 'Amsterdam',
+                region: 'Europe'
+            },
+            'Belgium': {
+                flag: '🇧🇪',
+                gdp: { rank: 26, value: '$680B' },
+                gdpPerCapita: { rank: 13, value: '$57,200' },
+                happinessIndex: { rank: 17, score: 7.0 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '11.6M',
+                capital: 'Brussels',
+                region: 'Europe'
+            },
+            'Austria': {
+                flag: '🇦🇹',
+                gdp: { rank: 40, value: '$516B' },
+                gdpPerCapita: { rank: 11, value: '$57,600' },
+                happinessIndex: { rank: 11, score: 7.3 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '9M',
+                capital: 'Vienna',
+                region: 'Europe'
+            },
+            'Switzerland': {
+                flag: '🇨🇭',
+                gdp: { rank: 22, value: '$890B' },
+                gdpPerCapita: { rank: 2, value: '$92,200' },
+                happinessIndex: { rank: 6, score: 7.4 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '8.7M',
+                capital: 'Bern',
+                region: 'Europe'
+            },
+            'Sweden': {
+                flag: '🇸🇪',
+                gdp: { rank: 29, value: '$614B' },
+                gdpPerCapita: { rank: 8, value: '$59,000' },
+                happinessIndex: { rank: 7, score: 7.4 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '10.5M',
+                capital: 'Stockholm',
+                region: 'Europe'
+            },
+            'Norway': {
+                flag: '🇳🇴',
+                gdp: { rank: 38, value: '$445B' },
+                gdpPerCapita: { rank: 1, value: '$105,300' },
+                happinessIndex: { rank: 2, score: 7.7 },
+                allies: ['USA', 'NATO'],
+                foes: [],
+                population: '5.5M',
+                capital: 'Oslo',
+                region: 'Europe'
+            },
+            'Denmark': {
+                flag: '🇩🇰',
+                gdp: { rank: 43, value: '$414B' },
+                gdpPerCapita: { rank: 4, value: '$88,200' },
+                happinessIndex: { rank: 3, score: 7.6 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '5.9M',
+                capital: 'Copenhagen',
+                region: 'Europe'
+            },
+            'Finland': {
+                flag: '🇫🇮',
+                gdp: { rank: 44, value: '$380B' },
+                gdpPerCapita: { rank: 9, value: '$68,900' },
+                happinessIndex: { rank: 1, score: 7.8 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '5.6M',
+                capital: 'Helsinki',
+                region: 'Europe'
+            },
+            'Poland': {
+                flag: '🇵🇱',
+                gdp: { rank: 39, value: '$827B' },
+                gdpPerCapita: { rank: 44, value: '$21,000' },
+                happinessIndex: { rank: 43, score: 6.1 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '38M',
+                capital: 'Warsaw',
+                region: 'Europe'
+            },
+            'Czech Republic': {
+                flag: '🇨🇿',
+                gdp: { rank: 46, value: '$301B' },
+                gdpPerCapita: { rank: 34, value: '$27,800' },
+                happinessIndex: { rank: 42, score: 6.1 },
+                allies: ['EU', 'USA'],
+                foes: [],
+                population: '10.5M',
+                capital: 'Prague',
+                region: 'Europe'
             }
         };
 
-        // ==================== CANVAS & MAP ====================
-        const canvas = document.getElementById('mapCanvas');
-        const ctx = canvas.getContext('2d');
-        let scale = 1;
-        let panX = 0;
-        let panY = 0;
-        let isDragging = false;
-        let dragStart = { x: 0, y: 0 };
+        // ==================== D3.js MAP SETUP ====================
+        const width = document.querySelector('.map-container').clientWidth;
+        const height = document.querySelector('.map-container').clientHeight;
+
+        const svg = d3.select('#mapSVG')
+            .attr('width', width)
+            .attr('height', height);
+
+        // Add gradients
+        const defs = svg.append('defs');
+        defs.append('linearGradient')
+            .attr('id', 'countryGradient')
+            .attr('x1', '0%').attr('y1', '0%')
+            .attr('x2', '100%').attr('y2', '100%')
+            .selectAll('stop')
+            .data([
+                { offset: '0%', color: '#ff9933' },
+                { offset: '100%', color: '#ff6600' }
+            ])
+            .enter().append('stop')
+            .attr('offset', d => d.offset)
+            .attr('stop-color', d => d.color);
+
+        defs.append('linearGradient')
+            .attr('id', 'hoverGradient')
+            .attr('x1', '0%').attr('y1', '0%')
+            .attr('x2', '100%').attr('y2', '100%')
+            .selectAll('stop')
+            .data([
+                { offset: '0%', color: '#ffcc00' },
+                { offset: '100%', color: '#ffaa00' }
+            ])
+            .enter().append('stop')
+            .attr('offset', d => d.offset)
+            .attr('stop-color', d => d.color);
+
+        const projection = d3.geoMercator()
+            .fitSize([width, height], { type: 'Sphere' });
+
+        const pathGenerator = d3.geoPath().projection(projection);
+
         let selectedCountry = null;
 
-        // Simple country regions (simplified for demonstration)
-        const countryRegions = {
-            'USA': { x: 150, y: 200, radius: 60, x2: 350, y2: 380 },
-            'Canada': { x: 150, y: 100, radius: 50, x2: 350, y2: 200 },
-            'Mexico': { x: 100, y: 270, radius: 40, x2: 200, y2: 350 },
-            'Brazil': { x: 280, y: 350, radius: 50, x2: 350, y2: 450 },
-            'Argentina': { x: 260, y: 450, radius: 45, x2: 320, y2: 520 },
-            'UK': { x: 500, y: 150, radius: 25, x2: 550, y2: 190 },
-            'France': { x: 520, y: 160, radius: 30, x2: 580, y2: 210 },
-            'Germany': { x: 540, y: 140, radius: 25, x2: 590, y2: 180 },
-            'Spain': { x: 480, y: 180, radius: 30, x2: 530, y2: 230 },
-            'Italy': { x: 560, y: 190, radius: 25, x2: 610, y2: 230 },
-            'Russia': { x: 650, y: 120, radius: 80, x2: 850, y2: 300 },
-            'China': { x: 720, y: 220, radius: 70, x2: 880, y2: 350 },
-            'Japan': { x: 830, y: 180, radius: 35, x2: 900, y2: 240 },
-            'South Korea': { x: 770, y: 170, radius: 20, x2: 810, y2: 200 },
-            'India': { x: 620, y: 320, radius: 55, x2: 720, y2: 420 },
-            'Saudi Arabia': { x: 580, y: 280, radius: 40, x2: 660, y2: 350 },
-            'Iran': { x: 600, y: 260, radius: 35, x2: 670, y2: 310 },
-            'Turkey': { x: 560, y: 220, radius: 30, x2: 620, y2: 270 },
-            'Egypt': { x: 530, y: 300, radius: 30, x2: 580, y2: 360 },
-            'Nigeria': { x: 480, y: 350, radius: 35, x2: 540, y2: 410 },
-            'South Africa': { x: 550, y: 450, radius: 40, x2: 620, y2: 520 },
-            'Australia': { x: 850, y: 450, radius: 50, x2: 950, y2: 530 }
+        // Load world map data
+        d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(topology => {
+            const countries = feature(topology, topology.objects.countries).features;
+
+            svg.selectAll('.country')
+                .data(countries)
+                .enter()
+                .append('path')
+                .attr('class', 'country')
+                .attr('d', pathGenerator)
+                .attr('fill', 'url(#countryGradient)')
+                .attr('stroke', '#0a1428')
+                .attr('stroke-width', 0.5)
+                .style('cursor', 'pointer')
+                .on('mouseover', function(event, d) {
+                    const name = getCountryName(d.id);
+                    if (name && countryData[name]) {
+                        d3.select(this).attr('fill', 'url(#hoverGradient)');
+                        showTooltip(event, name);
+                    }
+                })
+                .on('mouseout', function() {
+                    d3.select(this).attr('fill', d => selectedCountry === getCountryName(d.id) ? 'url(#hoverGradient)' : 'url(#countryGradient)');
+                    hideTooltip();
+                })
+                .on('click', function(event, d) {
+                    const name = getCountryName(d.id);
+                    if (name && countryData[name]) {
+                        selectCountry(name);
+                    }
+                });
+        }).catch(err => {
+            console.error('Error loading world map data:', err);
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#00d4ff')
+                .text('Map data loading failed. Please check your internet connection.');
+        });
+
+        // ==================== COUNTRY NAME MAPPING ====================
+        const countryIdMap = {
+            840: 'United States',
+            156: 'China',
+            392: 'Japan',
+            276: 'Germany',
+            826: 'United Kingdom',
+            250: 'France',
+            356: 'India',
+            643: 'Russia',
+            76: 'Brazil',
+            124: 'Canada',
+            410: 'South Korea',
+            36: 'Australia',
+            484: 'Mexico',
+            380: 'Italy',
+            724: 'Spain',
+            818: 'Egypt',
+            682: 'Saudi Arabia',
+            566: 'Nigeria',
+            710: 'South Africa',
+            32: 'Argentina',
+            792: 'Turkey',
+            364: 'Iran',
+            360: 'Indonesia',
+            586: 'Pakistan',
+            764: 'Thailand',
+            704: 'Vietnam',
+            608: 'Philippines',
+            458: 'Malaysia',
+            300: 'Greece',
+            620: 'Portugal',
+            528: 'Netherlands',
+            56: 'Belgium',
+            40: 'Austria',
+            756: 'Switzerland',
+            752: 'Sweden',
+            578: 'Norway',
+            208: 'Denmark',
+            246: 'Finland',
+            616: 'Poland',
+            203: 'Czech Republic'
         };
 
-        function resizeCanvas() {
-            const rect = document.querySelector('.map-container').getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            draw();
+        function getCountryName(id) {
+            return countryIdMap[id] || null;
         }
-
-        function draw() {
-            ctx.fillStyle = '#0a1428';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.save();
-            ctx.translate(canvas.width / 2 + panX, canvas.height / 2 + panY);
-            ctx.scale(scale, scale);
-
-            // Draw grid
-            drawGrid();
-
-            // Draw countries
-            Object.entries(countryRegions).forEach(([country, region]) => {
-                drawCountry(country, region);
-            });
-
-            ctx.restore();
-        }
-
-        function drawGrid() {
-            ctx.strokeStyle = 'rgba(0, 212, 255, 0.05)';
-            ctx.lineWidth = 1;
-            for (let i = -400; i < 400; i += 50) {
-                ctx.beginPath();
-                ctx.moveTo(i, -300);
-                ctx.lineTo(i, 300);
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.moveTo(-400, i);
-                ctx.lineTo(400, i);
-                ctx.stroke();
-            }
-        }
-
-        function drawCountry(name, region) {
-            const isSelected = selectedCountry === name;
-            
-            // Draw country rectangle
-            ctx.fillStyle = isSelected ? 'rgba(0, 255, 136, 0.3)' : 'rgba(0, 212, 255, 0.15)';
-            ctx.strokeStyle = isSelected ? '#00ff88' : 'rgba(0, 212, 255, 0.5)';
-            ctx.lineWidth = isSelected ? 3 : 2;
-
-            ctx.fillRect(
-                region.x - region.radius,
-                region.y - region.radius,
-                region.radius * 2,
-                region.radius * 2
-            );
-            ctx.strokeRect(
-                region.x - region.radius,
-                region.y - region.radius,
-                region.radius * 2,
-                region.radius * 2
-            );
-
-            // Draw label
-            ctx.fillStyle = isSelected ? '#00ff88' : 'rgba(224, 224, 224, 0.8)';
-            ctx.font = isSelected ? 'bold 12px Arial' : '11px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(name, region.x, region.y);
-
-            // Draw flag
-            const flagSize = isSelected ? 14 : 12;
-            ctx.font = `${flagSize}px Arial`;
-            ctx.fillText(countryData[name].flag, region.x, region.y - 15);
-        }
-
-        function getCountryAtMouse(x, y) {
-            // Convert mouse position to canvas coordinates
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = (x - rect.left - canvas.width / 2 - panX) / scale;
-            const mouseY = (y - rect.top - canvas.height / 2 - panY) / scale;
-
-            for (const [country, region] of Object.entries(countryRegions)) {
-                const distance = Math.sqrt(
-                    Math.pow(mouseX - region.x, 2) + Math.pow(mouseY - region.y, 2)
-                );
-                if (distance < region.radius) {
-                    return country;
-                }
-            }
-            return null;
-        }
-
-        // ==================== EVENT LISTENERS ====================
-        canvas.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                panX += e.clientX - dragStart.x;
-                panY += e.clientY - dragStart.y;
-                dragStart = { x: e.clientX, y: e.clientY };
-                draw();
-            } else {
-                const country = getCountryAtMouse(e.clientX, e.clientY);
-                if (country) {
-                    canvas.style.cursor = 'pointer';
-                    showTooltip(e.clientX, e.clientY, country);
-                } else {
-                    canvas.style.cursor = 'grab';
-                    hideTooltip();
-                }
-            }
-        });
-
-        canvas.addEventListener('mousedown', (e) => {
-            const country = getCountryAtMouse(e.clientX, e.clientY);
-            if (country && !isDragging) {
-                selectCountry(country);
-            } else if (!country) {
-                isDragging = true;
-                dragStart = { x: e.clientX, y: e.clientY };
-            }
-        });
-
-        canvas.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        canvas.addEventListener('mouseleave', () => {
-            isDragging = false;
-            hideTooltip();
-            canvas.style.cursor = 'grab';
-        });
-
-        canvas.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-            scale = Math.max(0.5, Math.min(scale * zoomFactor, 3));
-            draw();
-        });
-
-        // Control buttons
-        document.getElementById('zoomInBtn').addEventListener('click', () => {
-            scale = Math.min(scale * 1.2, 3);
-            draw();
-        });
-
-        document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            scale = Math.max(scale / 1.2, 0.5);
-            draw();
-        });
-
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            scale = 1;
-            panX = 0;
-            panY = 0;
-            selectedCountry = null;
-            draw();
-            document.getElementById('infoPanelContent').innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">🌐</div>
-                    <p>Click on a country to view detailed information</p>
-                </div>
-            `;
-        });
 
         // ==================== TOOLTIP ====================
-        function showTooltip(x, y, country) {
+        function showTooltip(event, country) {
             const tooltip = document.getElementById('tooltip');
             const data = countryData[country];
-            
-            document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
-            document.getElementById('tooltipInfo').textContent = data.description;
 
-            tooltip.style.left = (x + 15) + 'px';
-            tooltip.style.top = (y - 20) + 'px';
-            tooltip.classList.add('active');
+            if (data) {
+                document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
+                document.getElementById('tooltipInfo').textContent = `${data.capital} • Population: ${data.population}`;
+
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 20) + 'px';
+                tooltip.classList.add('active');
+            }
         }
 
         function hideTooltip() {
@@ -918,10 +1041,8 @@
             selectedCountry = country;
             const data = countryData[country];
 
-            // Update header
             document.getElementById('currentCountry').textContent = `${data.flag} ${country.toUpperCase()}`;
 
-            // Update info panel
             let html = `
                 <div class="panel-header">
                     <div class="panel-title">${data.flag} ${country}</div>
@@ -990,13 +1111,42 @@
             }
 
             document.getElementById('infoPanelContent').innerHTML = html;
-            draw();
             hideTooltip();
         }
 
-        // Initialize
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        // ==================== CONTROLS ====================
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            selectedCountry = null;
+            document.getElementById('currentCountry').textContent = 'Hover over a country';
+            document.getElementById('infoPanelContent').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🌐</div>
+                    <p>Click on a country to view detailed information</p>
+                </div>
+            `;
+        });
+
+        document.getElementById('zoomInBtn').addEventListener('click', () => {
+            svg.transition()
+                .duration(750)
+                .style('transform', 'scale(1.25)');
+        });
+
+        document.getElementById('zoomOutBtn').addEventListener('click', () => {
+            svg.transition()
+                .duration(750)
+                .style('transform', 'scale(0.8)');
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            location.reload();
+        });
+
+        // Helper function from TopoJSON
+        function feature(topology, o) {
+            return o.type === 'GeometryCollection' ? { type: 'FeatureCollection', features: o.geometries.map((g, i) => ({ type: 'Feature', properties: o.properties?.[i], geometry: g })) } : { type: 'FeatureCollection', features: [{ type: 'Feature', properties: o.properties, geometry: o }] };
+        }
     </script>
 </body>
 </html>
