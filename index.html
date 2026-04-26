@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Explorer - Interactive World Map</title>
     <style>
-        /* ==================== GLOBAL STYLES ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* CSS Variables for theming */
         :root {
             --primary: #0a1428;
             --secondary: #1b2d4d;
@@ -25,7 +19,6 @@
             --danger: #ff4444;
         }
 
-        /* Light mode theme */
         body.light-mode {
             --primary: #ffffff;
             --secondary: #f0f0f0;
@@ -43,7 +36,6 @@
             transition: background 0.3s ease;
         }
 
-        /* ==================== HEADER STYLES ==================== */
         header {
             background: rgba(10, 20, 40, 0.95);
             padding: 1.5rem 2rem;
@@ -53,9 +45,7 @@
             z-index: 50;
         }
 
-        body.light-mode header {
-            background: rgba(255, 255, 255, 0.95);
-        }
+        body.light-mode header { background: rgba(255, 255, 255, 0.95); }
 
         .header-content {
             max-width: 1600px;
@@ -76,17 +66,10 @@
             white-space: nowrap;
         }
 
-        body.light-mode .logo {
-            text-shadow: none;
-        }
+        body.light-mode .logo { text-shadow: none; }
 
-        .tagline {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            opacity: 0.7;
-        }
+        .tagline { font-size: 0.85rem; color: var(--text-light); opacity: 0.7; }
 
-        /* Search bar styling */
         .search-container {
             flex: 1;
             min-width: 250px;
@@ -117,15 +100,9 @@
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
-        .search-bar::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
+        .search-bar::placeholder { color: rgba(255, 255, 255, 0.5); }
+        body.light-mode .search-bar::placeholder { color: rgba(0, 0, 0, 0.3); }
 
-        body.light-mode .search-bar::placeholder {
-            color: rgba(0, 0, 0, 0.3);
-        }
-
-        /* Search results dropdown */
         .search-results {
             position: absolute;
             top: 100%;
@@ -147,9 +124,7 @@
             border-color: #0066cc;
         }
 
-        .search-results.active {
-            display: block;
-        }
+        .search-results.active { display: block; }
 
         .search-result-item {
             padding: 0.8rem 1rem;
@@ -163,17 +138,10 @@
             padding-left: 1.5rem;
         }
 
-        body.light-mode .search-result-item:hover {
-            background: rgba(0, 102, 204, 0.1);
-        }
+        body.light-mode .search-result-item:hover { background: rgba(0, 102, 204, 0.1); }
 
-        .header-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
+        .header-controls { display: flex; gap: 1rem; align-items: center; }
 
-        /* Theme toggle button */
         .theme-toggle {
             width: 45px;
             height: 45px;
@@ -195,14 +163,8 @@
             transform: rotate(20deg);
         }
 
-        .header-info {
-            text-align: right;
-            font-size: 0.95rem;
-            color: var(--text-light);
-            white-space: nowrap;
-        }
+        .header-info { text-align: right; font-size: 0.95rem; color: var(--text-light); white-space: nowrap; }
 
-        /* ==================== MAIN CONTAINER ==================== */
         .container {
             display: flex;
             height: calc(100vh - 80px);
@@ -210,7 +172,6 @@
             padding: 1rem;
         }
 
-        /* Map container */
         .map-container {
             flex: 1;
             background: rgba(27, 45, 77, 0.5);
@@ -226,17 +187,10 @@
             border-color: #0066cc;
         }
 
-        .map-container:active {
-            cursor: grabbing;
-        }
+        .map-container:active { cursor: grabbing; }
 
-        svg {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+        svg { display: block; width: 100%; height: 100%; }
 
-        /* ==================== TOOLTIP STYLES ==================== */
         .tooltip {
             position: fixed;
             background: rgba(10, 20, 40, 0.95);
@@ -269,12 +223,7 @@
             letter-spacing: 1px;
         }
 
-        .tooltip-info {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
+        .tooltip-info { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 0.5rem; }
 
         .tooltip-fact {
             font-size: 0.8rem;
@@ -284,14 +233,8 @@
             border-top: 1px solid rgba(0, 212, 255, 0.2);
         }
 
-        .tooltip-hint {
-            font-size: 0.75rem;
-            color: var(--warning);
-            margin-top: 0.5rem;
-            font-style: italic;
-        }
+        .tooltip-hint { font-size: 0.75rem; color: var(--warning); margin-top: 0.5rem; font-style: italic; }
 
-        /* ==================== INFO PANEL STYLES ==================== */
         .info-panel {
             width: 380px;
             background: rgba(27, 45, 77, 0.8);
@@ -309,23 +252,10 @@
             border-color: #0066cc;
         }
 
-        .info-panel::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .info-panel::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .info-panel::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-        }
-
-        .info-panel::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-dark);
-        }
+        .info-panel::-webkit-scrollbar { width: 8px; }
+        .info-panel::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .info-panel::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .info-panel::-webkit-scrollbar-thumb:hover { background: var(--accent-dark); }
 
         .panel-header {
             text-align: center;
@@ -343,17 +273,9 @@
             text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
-        body.light-mode .panel-title {
-            color: #0066cc;
-            text-shadow: none;
-        }
+        body.light-mode .panel-title { color: #0066cc; text-shadow: none; }
 
-        .panel-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            opacity: 0.7;
-            margin-top: 0.3rem;
-        }
+        .panel-subtitle { font-size: 0.85rem; color: var(--text-light); opacity: 0.7; margin-top: 0.3rem; }
 
         .empty-state {
             display: flex;
@@ -366,14 +288,9 @@
             opacity: 0.5;
         }
 
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
 
-        .info-section {
-            margin-bottom: 1.5rem;
-        }
+        .info-section { margin-bottom: 1.5rem; }
 
         .section-title {
             font-size: 0.9rem;
@@ -403,58 +320,19 @@
             border-left-color: #0066cc;
         }
 
-        .rank-label {
-            font-weight: 600;
-            color: var(--text-light);
-        }
+        .rank-label { font-weight: 600; color: var(--text-light); }
+        .rank-value { color: var(--success); font-weight: 700; font-size: 1.1rem; }
 
-        .rank-value {
-            color: var(--success);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* ==================== ANIMATIONS ==================== */
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes glow {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-            }
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.6); }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .glow {
-            animation: glow 1.5s ease-in-out infinite;
-        }
-
-        /* ==================== CONTROLS ==================== */
         .controls {
             position: absolute;
             bottom: 20px;
@@ -487,120 +365,44 @@
             transform: scale(1.1);
         }
 
-        .control-btn:active {
-            transform: scale(0.95);
-        }
+        .control-btn:active { transform: scale(0.95); }
 
-        /* Loading spinner */
-        .loading {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 999;
-        }
-
-        .loading.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 212, 255, 0.2);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 1200px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .info-panel {
-                width: 100%;
-                height: 250px;
-            }
-
-            .map-container {
-                flex: 1;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .search-container {
-                max-width: 100%;
-            }
+            .container { flex-direction: column; }
+            .info-panel { width: 100%; height: 250px; }
+            .header-content { flex-direction: column; gap: 1rem; }
+            .search-container { max-width: 100%; }
         }
 
         @media (max-width: 600px) {
-            .logo {
-                font-size: 1.3rem;
-            }
-
-            .tagline {
-                display: none;
-            }
-
-            .header-info {
-                display: none;
-            }
-
-            .control-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-
-            .controls {
-                bottom: 10px;
-                right: 10px;
-            }
+            .logo { font-size: 1.3rem; }
+            .tagline, .header-info { display: none; }
+            .control-btn { width: 40px; height: 40px; font-size: 1rem; }
+            .controls { bottom: 10px; right: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <div class="header-content">
             <div>
                 <div class="logo">🌍 GLOBAL EXPLORER</div>
                 <div class="tagline">Discover countries, explore world data</div>
             </div>
-
-            <!-- Search Bar -->
             <div class="search-container">
-                <input 
-                    type="text" 
-                    class="search-bar" 
-                    id="searchBar" 
-                    placeholder="Search for a country..."
-                    autocomplete="off"
-                >
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search for a country..." autocomplete="off">
                 <div class="search-results" id="searchResults"></div>
             </div>
-
-            <!-- Theme Toggle & Info -->
             <div class="header-controls">
                 <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
             </div>
-
             <div class="header-info">
                 <p id="currentCountry">👆 Hover over a country</p>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Map Area -->
         <div class="map-container">
             <svg id="mapSVG"></svg>
             <div class="controls">
@@ -609,8 +411,6 @@
                 <button class="control-btn" id="zoomOutBtn" title="Zoom Out">−</button>
             </div>
         </div>
-
-        <!-- Info Panel -->
         <div class="info-panel">
             <div id="infoPanelContent">
                 <div class="empty-state">
@@ -621,7 +421,6 @@
         </div>
     </div>
 
-    <!-- Tooltip -->
     <div class="tooltip" id="tooltip">
         <div class="tooltip-country" id="tooltipCountry">Country</div>
         <div class="tooltip-info" id="tooltipInfo">Info</div>
@@ -629,435 +428,62 @@
         <div class="tooltip-hint">💡 Click for details</div>
     </div>
 
-    <!-- Loading Spinner -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-    </div>
-
     <!-- D3.js and TopoJSON Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 
-    <!-- Main Application Script -->
     <script>
-        // ==================== GLOBAL STATE ====================
         const appState = {
             selectedCountry: null,
             isDarkMode: true,
             countryData: {},
             allCountries: [],
-            zoomLevel: 1,
-            panX: 0,
-            panY: 0
+            zoomBehavior: null
         };
 
-        // ==================== COUNTRY DATABASE ====================
-        // This is a comprehensive database with unique facts for each country
         const countryDatabase = {
-            'United States': {
-                flag: '🇺🇸',
-                gdp: '$27.4T',
-                gdpPerCapita: '$82,500',
-                happinessIndex: 7.1,
-                population: '331M',
-                capital: 'Washington DC',
-                region: 'North America',
-                fact: 'Home to the world\'s largest economy and tech innovation hub'
-            },
-            'China': {
-                flag: '🇨🇳',
-                gdp: '$17.9T',
-                gdpPerCapita: '$12,720',
-                happinessIndex: 5.5,
-                population: '1.4B',
-                capital: 'Beijing',
-                region: 'East Asia',
-                fact: 'The Great Wall stretches over 13,000 miles across northern China'
-            },
-            'Japan': {
-                flag: '🇯🇵',
-                gdp: '$4.2T',
-                gdpPerCapita: '$33,800',
-                happinessIndex: 6.2,
-                population: '125M',
-                capital: 'Tokyo',
-                region: 'East Asia',
-                fact: 'Has the world\'s fastest trains with bullet speeds over 300 km/h'
-            },
-            'Germany': {
-                flag: '🇩🇪',
-                gdp: '$4.0T',
-                gdpPerCapita: '$48,900',
-                happinessIndex: 6.9,
-                population: '83M',
-                capital: 'Berlin',
-                region: 'Europe',
-                fact: 'Oktoberfest celebrates Bavarian culture with millions of visitors yearly'
-            },
-            'United Kingdom': {
-                flag: '🇬🇧',
-                gdp: '$3.3T',
-                gdpPerCapita: '$46,200',
-                happinessIndex: 7.0,
-                population: '67M',
-                capital: 'London',
-                region: 'Europe',
-                fact: 'Big Ben is one of the most recognizable clock towers in the world'
-            },
-            'France': {
-                flag: '🇫🇷',
-                gdp: '$2.8T',
-                gdpPerCapita: '$42,700',
-                happinessIndex: 6.9,
-                population: '68M',
-                capital: 'Paris',
-                region: 'Europe',
-                fact: 'The Eiffel Tower attracts over 7 million visitors every year'
-            },
-            'India': {
-                flag: '🇮🇳',
-                gdp: '$3.7T',
-                gdpPerCapita: '$2,550',
-                happinessIndex: 5.2,
-                population: '1.4B',
-                capital: 'New Delhi',
-                region: 'South Asia',
-                fact: 'Bollywood produces more films annually than Hollywood'
-            },
-            'Russia': {
-                flag: '🇷🇺',
-                gdp: '$1.8T',
-                gdpPerCapita: '$11,600',
-                happinessIndex: 5.0,
-                population: '144M',
-                capital: 'Moscow',
-                region: 'Europe/Asia',
-                fact: 'Russia spans 11 time zones, the most of any country in the world'
-            },
-            'Brazil': {
-                flag: '🇧🇷',
-                gdp: '$2.1T',
-                gdpPerCapita: '$9,200',
-                happinessIndex: 5.9,
-                population: '215M',
-                capital: 'Brasília',
-                region: 'South America',
-                fact: 'The Amazon rainforest produces 20% of the world\'s oxygen'
-            },
-            'Canada': {
-                flag: '🇨🇦',
-                gdp: '$2.1T',
-                gdpPerCapita: '$54,700',
-                happinessIndex: 7.2,
-                population: '39M',
-                capital: 'Ottawa',
-                region: 'North America',
-                fact: 'Niagara Falls provides 25% of North America\'s hydroelectric power'
-            },
-            'South Korea': {
-                flag: '🇰🇷',
-                gdp: '$1.8T',
-                gdpPerCapita: '$32,400',
-                happinessIndex: 5.8,
-                population: '52M',
-                capital: 'Seoul',
-                region: 'East Asia',
-                fact: 'South Korea has the world\'s fastest internet speeds'
-            },
-            'Australia': {
-                flag: '🇦🇺',
-                gdp: '$1.7T',
-                gdpPerCapita: '$64,600',
-                happinessIndex: 7.2,
-                population: '26M',
-                capital: 'Canberra',
-                region: 'Oceania',
-                fact: 'The Great Barrier Reef is the world\'s largest coral reef system'
-            },
-            'Mexico': {
-                flag: '🇲🇽',
-                gdp: '$1.3T',
-                gdpPerCapita: '$9,800',
-                happinessIndex: 6.6,
-                population: '128M',
-                capital: 'Mexico City',
-                region: 'North America',
-                fact: 'Mexico City is built on an ancient Aztec capital, Tenochtitlan'
-            },
-            'Italy': {
-                flag: '🇮🇹',
-                gdp: '$2.0T',
-                gdpPerCapita: '$33,800',
-                happinessIndex: 6.8,
-                population: '58M',
-                capital: 'Rome',
-                region: 'Europe',
-                fact: 'The Colosseum in Rome could hold 50,000 spectators in ancient times'
-            },
-            'Spain': {
-                flag: '🇪🇸',
-                gdp: '$1.4T',
-                gdpPerCapita: '$30,100',
-                happinessIndex: 6.8,
-                population: '47M',
-                capital: 'Madrid',
-                region: 'Europe',
-                fact: 'Spain invented chocolate by mixing cacao with sugar and spices'
-            },
-            'Egypt': {
-                flag: '🇪🇬',
-                gdp: '$476B',
-                gdpPerCapita: '$4,500',
-                happinessIndex: 5.3,
-                population: '104M',
-                capital: 'Cairo',
-                region: 'Africa',
-                fact: 'The pyramids of Giza are among the oldest structures on Earth'
-            },
-            'Saudi Arabia': {
-                flag: '🇸🇦',
-                gdp: '$1.2T',
-                gdpPerCapita: '$36,200',
-                happinessIndex: 5.5,
-                population: '36M',
-                capital: 'Riyadh',
-                region: 'Middle East',
-                fact: 'Saudi Arabia has the second-largest proven oil reserves in the world'
-            },
-            'Nigeria': {
-                flag: '🇳🇬',
-                gdp: '$470B',
-                gdpPerCapita: '$2,100',
-                happinessIndex: 5.1,
-                population: '223M',
-                capital: 'Abuja',
-                region: 'Africa',
-                fact: 'Nigeria is the most populous country in Africa'
-            },
-            'South Africa': {
-                flag: '🇿🇦',
-                gdp: '$405B',
-                gdpPerCapita: '$6,700',
-                happinessIndex: 5.0,
-                population: '60M',
-                capital: 'Pretoria',
-                region: 'Africa',
-                fact: 'South Africa is the only country with three capitals'
-            },
-            'Argentina': {
-                flag: '🇦🇷',
-                gdp: '$632B',
-                gdpPerCapita: '$14,100',
-                happinessIndex: 7.0,
-                population: '46M',
-                capital: 'Buenos Aires',
-                region: 'South America',
-                fact: 'Argentina is known for tango dancing originating in Buenos Aires'
-            },
-            'Turkey': {
-                flag: '🇹🇷',
-                gdp: '$905B',
-                gdpPerCapita: '$10,500',
-                happinessIndex: 5.2,
-                population: '85M',
-                capital: 'Ankara',
-                region: 'Middle East/Europe',
-                fact: 'Turkey is the birthplace of many ancient civilizations'
-            },
-            'Iran': {
-                flag: '🇮🇷',
-                gdp: '$597B',
-                gdpPerCapita: '$7,000',
-                happinessIndex: 4.9,
-                population: '91M',
-                capital: 'Tehran',
-                region: 'Middle East',
-                fact: 'Persia, modern-day Iran, has one of the world\'s oldest civilizations'
-            },
-            'Indonesia': {
-                flag: '🇮🇩',
-                gdp: '$1.2T',
-                gdpPerCapita: '$4,250',
-                happinessIndex: 5.9,
-                population: '277M',
-                capital: 'Jakarta',
-                region: 'Southeast Asia',
-                fact: 'Indonesia is the world\'s largest archipelago with 17,000+ islands'
-            },
-            'Pakistan': {
-                flag: '🇵🇰',
-                gdp: '$595B',
-                gdpPerCapita: '$2,650',
-                happinessIndex: 4.9,
-                population: '240M',
-                capital: 'Islamabad',
-                region: 'South Asia',
-                fact: 'Mount K2, the world\'s second-highest peak, is in Pakistan'
-            },
-            'Thailand': {
-                flag: '🇹🇭',
-                gdp: '$475B',
-                gdpPerCapita: '$6,850',
-                happinessIndex: 5.4,
-                population: '72M',
-                capital: 'Bangkok',
-                region: 'Southeast Asia',
-                fact: 'Thailand is the only Southeast Asian country never colonized'
-            },
-            'Vietnam': {
-                flag: '🇻🇳',
-                gdp: '$429B',
-                gdpPerCapita: '$4,340',
-                happinessIndex: 5.5,
-                population: '99M',
-                capital: 'Hanoi',
-                region: 'Southeast Asia',
-                fact: 'Vietnam has the world\'s largest cave, Son Doong Cave'
-            },
-            'Philippines': {
-                flag: '🇵🇭',
-                gdp: '$505B',
-                gdpPerCapita: '$4,580',
-                happinessIndex: 5.9,
-                population: '120M',
-                capital: 'Manila',
-                region: 'Southeast Asia',
-                fact: 'The Philippines has over 7,600 islands'
-            },
-            'Malaysia': {
-                flag: '🇲🇾',
-                gdp: '$430B',
-                gdpPerCapita: '$13,500',
-                happinessIndex: 5.7,
-                population: '34M',
-                capital: 'Kuala Lumpur',
-                region: 'Southeast Asia',
-                fact: 'Petronas Twin Towers were once the world\'s tallest buildings'
-            },
-            'Greece': {
-                flag: '🇬🇷',
-                gdp: '$219B',
-                gdpPerCapita: '$20,900',
-                happinessIndex: 6.0,
-                population: '10.5M',
-                capital: 'Athens',
-                region: 'Europe',
-                fact: 'Greece is the birthplace of Western philosophy and democracy'
-            },
-            'Portugal': {
-                flag: '🇵🇹',
-                gdp: '$287B',
-                gdpPerCapita: '$26,600',
-                happinessIndex: 6.6,
-                population: '10.4M',
-                capital: 'Lisbon',
-                region: 'Europe',
-                fact: 'Portugal is one of the world\'s oldest nations, founded in 1297'
-            },
-            'Netherlands': {
-                flag: '🇳🇱',
-                gdp: '$1.1T',
-                gdpPerCapita: '$59,300',
-                happinessIndex: 7.4,
-                population: '17.6M',
-                capital: 'Amsterdam',
-                region: 'Europe',
-                fact: 'Amsterdam has over 1,200 bridges, the most of any city'
-            },
-            'Belgium': {
-                flag: '🇧🇪',
-                gdp: '$680B',
-                gdpPerCapita: '$57,200',
-                happinessIndex: 7.0,
-                population: '11.6M',
-                capital: 'Brussels',
-                region: 'Europe',
-                fact: 'Belgium produces over 200,000 tons of chocolate annually'
-            },
-            'Austria': {
-                flag: '🇦🇹',
-                gdp: '$516B',
-                gdpPerCapita: '$57,600',
-                happinessIndex: 7.3,
-                population: '9M',
-                capital: 'Vienna',
-                region: 'Europe',
-                fact: 'Vienna has been ranked the most livable city multiple times'
-            },
-            'Switzerland': {
-                flag: '🇨🇭',
-                gdp: '$890B',
-                gdpPerCapita: '$92,200',
-                happinessIndex: 7.4,
-                population: '8.7M',
-                capital: 'Bern',
-                region: 'Europe',
-                fact: 'Switzerland hasn\'t been in a military conflict since 1815'
-            },
-            'Sweden': {
-                flag: '🇸🇪',
-                gdp: '$614B',
-                gdpPerCapita: '$59,000',
-                happinessIndex: 7.4,
-                population: '10.5M',
-                capital: 'Stockholm',
-                region: 'Europe',
-                fact: 'Sweden has been at peace for over 200 years'
-            },
-            'Norway': {
-                flag: '🇳🇴',
-                gdp: '$445B',
-                gdpPerCapita: '$105,300',
-                happinessIndex: 7.7,
-                population: '5.5M',
-                capital: 'Oslo',
-                region: 'Europe',
-                fact: 'Norway has the world\'s largest sovereign wealth fund'
-            },
-            'Denmark': {
-                flag: '🇩🇰',
-                gdp: '$414B',
-                gdpPerCapita: '$88,200',
-                happinessIndex: 7.6,
-                population: '5.9M',
-                capital: 'Copenhagen',
-                region: 'Europe',
-                fact: 'Denmark is one of the world\'s happiest countries'
-            },
-            'Finland': {
-                flag: '🇫🇮',
-                gdp: '$380B',
-                gdpPerCapita: '$68,900',
-                happinessIndex: 7.8,
-                population: '5.6M',
-                capital: 'Helsinki',
-                region: 'Europe',
-                fact: 'Finland consistently ranks as the happiest country in the world'
-            },
-            'Poland': {
-                flag: '🇵🇱',
-                gdp: '$827B',
-                gdpPerCapita: '$21,000',
-                happinessIndex: 6.1,
-                population: '38M',
-                capital: 'Warsaw',
-                region: 'Europe',
-                fact: 'Warsaw was completely rebuilt after WWII destruction'
-            },
-            'Czech Republic': {
-                flag: '🇨🇿',
-                gdp: '$301B',
-                gdpPerCapita: '$27,800',
-                happinessIndex: 6.1,
-                population: '10.5M',
-                capital: 'Prague',
-                region: 'Europe',
-                fact: 'Prague\'s astronomical clock is one of the oldest in the world'
-            }
+            'United States': { flag: '🇺🇸', gdp: '$27.4T', gdpPerCapita: '$82,500', happinessIndex: 7.1, population: '331M', capital: 'Washington DC', region: 'North America', fact: 'Home to the world\'s largest economy and tech innovation hub' },
+            'China': { flag: '🇨🇳', gdp: '$17.9T', gdpPerCapita: '$12,720', happinessIndex: 5.5, population: '1.4B', capital: 'Beijing', region: 'East Asia', fact: 'The Great Wall stretches over 13,000 miles across northern China' },
+            'Japan': { flag: '🇯🇵', gdp: '$4.2T', gdpPerCapita: '$33,800', happinessIndex: 6.2, population: '125M', capital: 'Tokyo', region: 'East Asia', fact: 'Has the world\'s fastest trains with bullet speeds over 300 km/h' },
+            'Germany': { flag: '🇩🇪', gdp: '$4.0T', gdpPerCapita: '$48,900', happinessIndex: 6.9, population: '83M', capital: 'Berlin', region: 'Europe', fact: 'Oktoberfest celebrates Bavarian culture with millions of visitors yearly' },
+            'United Kingdom': { flag: '🇬🇧', gdp: '$3.3T', gdpPerCapita: '$46,200', happinessIndex: 7.0, population: '67M', capital: 'London', region: 'Europe', fact: 'Big Ben is one of the most recognizable clock towers in the world' },
+            'France': { flag: '🇫🇷', gdp: '$2.8T', gdpPerCapita: '$42,700', happinessIndex: 6.9, population: '68M', capital: 'Paris', region: 'Europe', fact: 'The Eiffel Tower attracts over 7 million visitors every year' },
+            'India': { flag: '🇮🇳', gdp: '$3.7T', gdpPerCapita: '$2,550', happinessIndex: 5.2, population: '1.4B', capital: 'New Delhi', region: 'South Asia', fact: 'Bollywood produces more films annually than Hollywood' },
+            'Russia': { flag: '🇷🇺', gdp: '$1.8T', gdpPerCapita: '$11,600', happinessIndex: 5.0, population: '144M', capital: 'Moscow', region: 'Europe/Asia', fact: 'Russia spans 11 time zones, the most of any country in the world' },
+            'Brazil': { flag: '🇧🇷', gdp: '$2.1T', gdpPerCapita: '$9,200', happinessIndex: 5.9, population: '215M', capital: 'Brasília', region: 'South America', fact: 'The Amazon rainforest produces 20% of the world\'s oxygen' },
+            'Canada': { flag: '🇨🇦', gdp: '$2.1T', gdpPerCapita: '$54,700', happinessIndex: 7.2, population: '39M', capital: 'Ottawa', region: 'North America', fact: 'Niagara Falls provides 25% of North America\'s hydroelectric power' },
+            'South Korea': { flag: '🇰🇷', gdp: '$1.8T', gdpPerCapita: '$32,400', happinessIndex: 5.8, population: '52M', capital: 'Seoul', region: 'East Asia', fact: 'South Korea has the world\'s fastest internet speeds' },
+            'Australia': { flag: '🇦🇺', gdp: '$1.7T', gdpPerCapita: '$64,600', happinessIndex: 7.2, population: '26M', capital: 'Canberra', region: 'Oceania', fact: 'The Great Barrier Reef is the world\'s largest coral reef system' },
+            'Mexico': { flag: '🇲🇽', gdp: '$1.3T', gdpPerCapita: '$9,800', happinessIndex: 6.6, population: '128M', capital: 'Mexico City', region: 'North America', fact: 'Mexico City is built on an ancient Aztec capital, Tenochtitlan' },
+            'Italy': { flag: '🇮🇹', gdp: '$2.0T', gdpPerCapita: '$33,800', happinessIndex: 6.8, population: '58M', capital: 'Rome', region: 'Europe', fact: 'The Colosseum in Rome could hold 50,000 spectators in ancient times' },
+            'Spain': { flag: '🇪🇸', gdp: '$1.4T', gdpPerCapita: '$30,100', happinessIndex: 6.8, population: '47M', capital: 'Madrid', region: 'Europe', fact: 'Spain invented chocolate by mixing cacao with sugar and spices' },
+            'Egypt': { flag: '🇪🇬', gdp: '$476B', gdpPerCapita: '$4,500', happinessIndex: 5.3, population: '104M', capital: 'Cairo', region: 'Africa', fact: 'The pyramids of Giza are among the oldest structures on Earth' },
+            'Saudi Arabia': { flag: '🇸🇦', gdp: '$1.2T', gdpPerCapita: '$36,200', happinessIndex: 5.5, population: '36M', capital: 'Riyadh', region: 'Middle East', fact: 'Saudi Arabia has the second-largest proven oil reserves in the world' },
+            'Nigeria': { flag: '🇳🇬', gdp: '$470B', gdpPerCapita: '$2,100', happinessIndex: 5.1, population: '223M', capital: 'Abuja', region: 'Africa', fact: 'Nigeria is the most populous country in Africa' },
+            'South Africa': { flag: '🇿🇦', gdp: '$405B', gdpPerCapita: '$6,700', happinessIndex: 5.0, population: '60M', capital: 'Pretoria', region: 'Africa', fact: 'South Africa is the only country with three capitals' },
+            'Argentina': { flag: '🇦🇷', gdp: '$632B', gdpPerCapita: '$14,100', happinessIndex: 7.0, population: '46M', capital: 'Buenos Aires', region: 'South America', fact: 'Argentina is known for tango dancing originating in Buenos Aires' },
+            'Turkey': { flag: '🇹🇷', gdp: '$905B', gdpPerCapita: '$10,500', happinessIndex: 5.2, population: '85M', capital: 'Ankara', region: 'Middle East/Europe', fact: 'Turkey is the birthplace of many ancient civilizations' },
+            'Iran': { flag: '🇮🇷', gdp: '$597B', gdpPerCapita: '$7,000', happinessIndex: 4.9, population: '91M', capital: 'Tehran', region: 'Middle East', fact: 'Persia, modern-day Iran, has one of the world\'s oldest civilizations' },
+            'Indonesia': { flag: '🇮🇩', gdp: '$1.2T', gdpPerCapita: '$4,250', happinessIndex: 5.9, population: '277M', capital: 'Jakarta', region: 'Southeast Asia', fact: 'Indonesia is the world\'s largest archipelago with 17,000+ islands' },
+            'Pakistan': { flag: '🇵🇰', gdp: '$595B', gdpPerCapita: '$2,650', happinessIndex: 4.9, population: '240M', capital: 'Islamabad', region: 'South Asia', fact: 'Mount K2, the world\'s second-highest peak, is in Pakistan' },
+            'Thailand': { flag: '🇹🇭', gdp: '$475B', gdpPerCapita: '$6,850', happinessIndex: 5.4, population: '72M', capital: 'Bangkok', region: 'Southeast Asia', fact: 'Thailand is the only Southeast Asian country never colonized' },
+            'Vietnam': { flag: '🇻🇳', gdp: '$429B', gdpPerCapita: '$4,340', happinessIndex: 5.5, population: '99M', capital: 'Hanoi', region: 'Southeast Asia', fact: 'Vietnam has the world\'s largest cave, Son Doong Cave' },
+            'Philippines': { flag: '🇵🇭', gdp: '$505B', gdpPerCapita: '$4,580', happinessIndex: 5.9, population: '120M', capital: 'Manila', region: 'Southeast Asia', fact: 'The Philippines has over 7,600 islands' },
+            'Malaysia': { flag: '🇲🇾', gdp: '$430B', gdpPerCapita: '$13,500', happinessIndex: 5.7, population: '34M', capital: 'Kuala Lumpur', region: 'Southeast Asia', fact: 'Petronas Twin Towers were once the world\'s tallest buildings' },
+            'Greece': { flag: '🇬🇷', gdp: '$219B', gdpPerCapita: '$20,900', happinessIndex: 6.0, population: '10.5M', capital: 'Athens', region: 'Europe', fact: 'Greece is the birthplace of Western philosophy and democracy' },
+            'Portugal': { flag: '🇵🇹', gdp: '$287B', gdpPerCapita: '$26,600', happinessIndex: 6.6, population: '10.4M', capital: 'Lisbon', region: 'Europe', fact: 'Portugal is one of the world\'s oldest nations, founded in 1297' },
+            'Netherlands': { flag: '🇳🇱', gdp: '$1.1T', gdpPerCapita: '$59,300', happinessIndex: 7.4, population: '17.6M', capital: 'Amsterdam', region: 'Europe', fact: 'Amsterdam has over 1,200 bridges, the most of any city' },
+            'Belgium': { flag: '🇧🇪', gdp: '$680B', gdpPerCapita: '$57,200', happinessIndex: 7.0, population: '11.6M', capital: 'Brussels', region: 'Europe', fact: 'Belgium produces over 200,000 tons of chocolate annually' },
+            'Austria': { flag: '🇦🇹', gdp: '$516B', gdpPerCapita: '$57,600', happinessIndex: 7.3, population: '9M', capital: 'Vienna', region: 'Europe', fact: 'Vienna has been ranked the most livable city multiple times' },
+            'Switzerland': { flag: '🇨🇭', gdp: '$890B', gdpPerCapita: '$92,200', happinessIndex: 7.4, population: '8.7M', capital: 'Bern', region: 'Europe', fact: 'Switzerland hasn\'t been in a military conflict since 1815' },
+            'Sweden': { flag: '🇸🇪', gdp: '$614B', gdpPerCapita: '$59,000', happinessIndex: 7.4, population: '10.5M', capital: 'Stockholm', region: 'Europe', fact: 'Sweden has been at peace for over 200 years' },
+            'Norway': { flag: '🇳🇴', gdp: '$445B', gdpPerCapita: '$105,300', happinessIndex: 7.7, population: '5.5M', capital: 'Oslo', region: 'Europe', fact: 'Norway has the world\'s largest sovereign wealth fund' },
+            'Denmark': { flag: '🇩🇰', gdp: '$414B', gdpPerCapita: '$88,200', happinessIndex: 7.6, population: '5.9M', capital: 'Copenhagen', region: 'Europe', fact: 'Denmark is one of the world\'s happiest countries' },
+            'Finland': { flag: '🇫🇮', gdp: '$380B', gdpPerCapita: '$68,900', happinessIndex: 7.8, population: '5.6M', capital: 'Helsinki', region: 'Europe', fact: 'Finland consistently ranks as the happiest country in the world' },
+            'Poland': { flag: '🇵🇱', gdp: '$827B', gdpPerCapita: '$21,000', happinessIndex: 6.1, population: '38M', capital: 'Warsaw', region: 'Europe', fact: 'Warsaw was completely rebuilt after WWII destruction' },
+            'Czech Republic': { flag: '🇨🇿', gdp: '$301B', gdpPerCapita: '$27,800', happinessIndex: 6.1, population: '10.5M', capital: 'Prague', region: 'Europe', fact: 'Prague\'s astronomical clock is one of the oldest in the world' }
         };
 
-        // ==================== COUNTRY ID MAPPING ====================
-        // Maps TopoJSON country IDs to country names
         const countryIdMap = {
             840: 'United States', 156: 'China', 392: 'Japan', 276: 'Germany', 826: 'United Kingdom',
             250: 'France', 356: 'India', 643: 'Russia', 76: 'Brazil', 124: 'Canada', 410: 'South Korea',
@@ -1073,48 +499,32 @@
         function init() {
             appState.countryData = countryDatabase;
             appState.allCountries = Object.keys(countryDatabase);
-            
-            // Setup event listeners
             setupEventListeners();
-            
-            // Load the world map
             loadWorldMap();
-            
-            // Load saved theme preference
             const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
-                toggleTheme();
-            }
+            if (savedTheme === 'light') toggleTheme();
         }
 
-        // ==================== EVENT LISTENERS ====================
         function setupEventListeners() {
-            // Theme toggle
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-            // Search functionality
             const searchBar = document.getElementById('searchBar');
             searchBar.addEventListener('input', handleSearch);
             searchBar.addEventListener('focus', () => {
-                if (searchBar.value) {
-                    document.getElementById('searchResults').classList.add('active');
-                }
+                if (searchBar.value) document.getElementById('searchResults').classList.add('active');
             });
 
-            // Close search results when clicking outside
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('.search-container')) {
                     document.getElementById('searchResults').classList.remove('active');
                 }
             });
 
-            // Control buttons
             document.getElementById('resetBtn').addEventListener('click', resetView);
             document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
             document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
         }
 
-        // ==================== THEME TOGGLE ====================
         function toggleTheme() {
             appState.isDarkMode = !appState.isDarkMode;
             document.body.classList.toggle('light-mode');
@@ -1122,7 +532,6 @@
             localStorage.setItem('theme', appState.isDarkMode ? 'dark' : 'light');
         }
 
-        // ==================== SEARCH FUNCTIONALITY ====================
         function handleSearch(e) {
             const query = e.target.value.toLowerCase().trim();
             const resultsContainer = document.getElementById('searchResults');
@@ -1133,9 +542,7 @@
                 return;
             }
 
-            const filtered = appState.allCountries.filter(country =>
-                country.toLowerCase().includes(query)
-            );
+            const filtered = appState.allCountries.filter(c => c.toLowerCase().includes(query));
 
             if (filtered.length === 0) {
                 resultsContainer.innerHTML = '<div class="search-result-item">No countries found</div>';
@@ -1146,7 +553,6 @@
                     </div>`
                 ).join('');
 
-                // Add click handlers to results
                 resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
                     if (item.dataset.country) {
                         item.addEventListener('click', () => {
@@ -1161,7 +567,7 @@
             resultsContainer.classList.add('active');
         }
 
-        // ==================== WORLD MAP SETUP ====================
+        // ==================== WORLD MAP ====================
         function loadWorldMap() {
             const container = document.querySelector('.map-container');
             const width = container.clientWidth;
@@ -1171,23 +577,26 @@
                 .attr('width', width)
                 .attr('height', height);
 
-            // Add background
+            // Background
             svg.append('rect')
                 .attr('width', width)
                 .attr('height', height)
                 .attr('fill', appState.isDarkMode ? 'rgba(10, 20, 40, 0.3)' : 'rgba(240, 240, 240, 0.3)');
 
-            // Setup projection
+            // Group for pan/zoom
+            const g = svg.append('g').attr('class', 'map-group');
+
             const projection = d3.geoMercator()
-                .fitSize([width, height], { type: 'Sphere' });
+                .scale(width / 6.5)
+                .translate([width / 2, height / 1.5]);
 
             const pathGenerator = d3.geoPath().projection(projection);
 
-            // Load world map data
+            // ✅ FIX: Use topojson (the loaded library) instead of the custom broken function
             d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(topology => {
-                const countries = feature(topology, topology.objects.countries).features;
+                const countries = topojson.feature(topology, topology.objects.countries).features;
 
-                svg.selectAll('.country')
+                g.selectAll('.country')
                     .data(countries)
                     .enter()
                     .append('path')
@@ -1199,15 +608,21 @@
                     .style('cursor', 'pointer')
                     .style('opacity', 0.8)
                     .on('mouseover', function(event, d) {
-                        const name = countryIdMap[d.id];
+                        const name = countryIdMap[+d.id];
                         if (name && appState.countryData[name]) {
                             d3.select(this).attr('fill', '#ffaa00').style('opacity', 1);
                             showTooltip(event, name);
                             document.getElementById('currentCountry').textContent = `👉 ${name.toUpperCase()}`;
                         }
                     })
-                    .on('mouseout', function(d) {
-                        const name = countryIdMap[d.id];
+                    .on('mousemove', function(event, d) {
+                        const name = countryIdMap[+d.id];
+                        if (name && appState.countryData[name]) {
+                            moveTooltip(event);
+                        }
+                    })
+                    .on('mouseout', function(event, d) {
+                        const name = countryIdMap[+d.id];
                         const isSelected = appState.selectedCountry === name;
                         d3.select(this)
                             .attr('fill', isSelected ? '#ffaa00' : '#00aa66')
@@ -1218,11 +633,12 @@
                         }
                     })
                     .on('click', function(event, d) {
-                        const name = countryIdMap[d.id];
+                        const name = countryIdMap[+d.id];
                         if (name && appState.countryData[name]) {
                             selectCountry(name);
                         }
                     });
+
             }).catch(err => {
                 console.error('Error loading map:', err);
                 svg.append('text')
@@ -1230,42 +646,59 @@
                     .attr('y', height / 2)
                     .attr('text-anchor', 'middle')
                     .attr('fill', 'red')
-                    .text('Error loading map. Please refresh the page.');
+                    .attr('font-size', '16px')
+                    .text('Error loading map data. Please check your internet connection.');
             });
+
+            // ✅ FIX: Use D3 zoom behavior (not CSS transform) for proper pan/zoom
+            const zoom = d3.zoom()
+                .scaleExtent([1, 8])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+
+            svg.call(zoom);
+            appState.zoomBehavior = zoom;
+            appState.svg = svg;
         }
 
-        // ==================== TOOLTIP MANAGEMENT ====================
         function showTooltip(event, country) {
             const data = appState.countryData[country];
             if (!data) return;
-
             const tooltip = document.getElementById('tooltip');
             document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
             document.getElementById('tooltipInfo').textContent = `Capital: ${data.capital} • Population: ${data.population}`;
             document.getElementById('tooltipFact').textContent = `💡 ${data.fact}`;
-
             tooltip.style.left = (event.pageX + 15) + 'px';
             tooltip.style.top = (event.pageY - 20) + 'px';
             tooltip.classList.add('active');
+        }
+
+        function moveTooltip(event) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = (event.pageX + 15) + 'px';
+            tooltip.style.top = (event.pageY - 20) + 'px';
         }
 
         function hideTooltip() {
             document.getElementById('tooltip').classList.remove('active');
         }
 
-        // ==================== COUNTRY SELECTION ====================
         function selectCountry(country) {
+            // Reset previous highlight
+            d3.selectAll('.country')
+                .attr('fill', d => countryIdMap[+d.id] === country ? '#ffaa00' : '#00aa66')
+                .style('opacity', d => countryIdMap[+d.id] === country ? 1 : 0.8);
+
             appState.selectedCountry = country;
             const data = appState.countryData[country];
-
             document.getElementById('currentCountry').textContent = `${data.flag} ${country.toUpperCase()}`;
 
-            let html = `
+            document.getElementById('infoPanelContent').innerHTML = `
                 <div class="panel-header">
                     <div class="panel-title">${data.flag} ${country}</div>
                     <div class="panel-subtitle">${data.region}</div>
                 </div>
-
                 <div class="info-section">
                     <div class="section-title">📊 Economic Indicators</div>
                     <div class="rank-item">
@@ -1277,7 +710,6 @@
                         <span class="rank-value">${data.gdpPerCapita}</span>
                     </div>
                 </div>
-
                 <div class="info-section">
                     <div class="section-title">😊 Quality of Life</div>
                     <div class="rank-item">
@@ -1285,7 +717,6 @@
                         <span class="rank-value">${data.happinessIndex}/10</span>
                     </div>
                 </div>
-
                 <div class="info-section">
                     <div class="section-title">👥 Basic Info</div>
                     <div class="rank-item">
@@ -1297,7 +728,6 @@
                         <span class="rank-value">${data.capital}</span>
                     </div>
                 </div>
-
                 <div class="info-section">
                     <div class="section-title">💡 Fun Fact</div>
                     <div style="font-size: 0.9rem; color: var(--success); padding: 0.8rem; background: rgba(0, 255, 136, 0.1); border-radius: 4px; border-left: 3px solid var(--success);">
@@ -1305,17 +735,30 @@
                     </div>
                 </div>
             `;
-
-            document.getElementById('infoPanelContent').innerHTML = html;
             hideTooltip();
         }
 
-        // ==================== CONTROLS ====================
+        // ==================== ZOOM CONTROLS ====================
+        function zoomIn() {
+            if (!appState.svg || !appState.zoomBehavior) return;
+            appState.svg.transition().duration(400).call(appState.zoomBehavior.scaleBy, 1.4);
+        }
+
+        function zoomOut() {
+            if (!appState.svg || !appState.zoomBehavior) return;
+            appState.svg.transition().duration(400).call(appState.zoomBehavior.scaleBy, 1 / 1.4);
+        }
+
         function resetView() {
             appState.selectedCountry = null;
-            appState.zoomLevel = 1;
-            appState.panX = 0;
-            appState.panY = 0;
+
+            d3.selectAll('.country')
+                .attr('fill', '#00aa66')
+                .style('opacity', 0.8);
+
+            if (appState.svg && appState.zoomBehavior) {
+                appState.svg.transition().duration(500).call(appState.zoomBehavior.transform, d3.zoomIdentity);
+            }
 
             document.getElementById('currentCountry').textContent = '👆 Hover over a country';
             document.getElementById('searchBar').value = '';
@@ -1325,52 +768,8 @@
                     <p>Click on a country to view detailed information</p>
                 </div>
             `;
-
-            // Reset map colors
-            d3.selectAll('.country')
-                .attr('fill', '#00aa66')
-                .style('opacity', 0.8);
         }
 
-        function zoomIn() {
-            appState.zoomLevel = Math.min(appState.zoomLevel + 0.2, 4);
-            updateMapZoom();
-        }
-
-        function zoomOut() {
-            appState.zoomLevel = Math.max(appState.zoomLevel - 0.2, 1);
-            updateMapZoom();
-        }
-
-        function updateMapZoom() {
-            d3.select('#mapSVG').transition()
-                .duration(500)
-                .style('transform', `scale(${appState.zoomLevel})`);
-        }
-
-        // ==================== HELPER FUNCTIONS ====================
-        // TopoJSON feature converter
-        function feature(topology, o) {
-            return o.type === 'GeometryCollection' 
-                ? { 
-                    type: 'FeatureCollection', 
-                    features: o.geometries.map((g, i) => ({ 
-                        type: 'Feature', 
-                        properties: o.properties?.[i], 
-                        geometry: g 
-                    })) 
-                } 
-                : { 
-                    type: 'FeatureCollection', 
-                    features: [{ 
-                        type: 'Feature', 
-                        properties: o.properties, 
-                        geometry: o 
-                    }] 
-                };
-        }
-
-        // ==================== START APPLICATION ====================
         init();
     </script>
 </body>
