@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Explorer - Interactive World Map</title>
     <style>
+        /* ==================== GLOBAL STYLES ==================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* CSS Variables for theming */
         :root {
             --primary: #0a1428;
             --secondary: #1b2d4d;
@@ -23,6 +25,14 @@
             --danger: #ff4444;
         }
 
+        /* Light mode theme */
+        body.light-mode {
+            --primary: #ffffff;
+            --secondary: #f0f0f0;
+            --accent: #0066cc;
+            --text-light: #333333;
+        }
+
         body {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -30,9 +40,10 @@
             overflow: hidden;
             height: 100vh;
             width: 100vw;
+            transition: background 0.3s ease;
         }
 
-        /* Header */
+        /* ==================== HEADER STYLES ==================== */
         header {
             background: rgba(10, 20, 40, 0.95);
             padding: 1.5rem 2rem;
@@ -42,12 +53,18 @@
             z-index: 50;
         }
 
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
         .header-content {
             max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -56,6 +73,11 @@
             color: var(--accent);
             letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            white-space: nowrap;
+        }
+
+        body.light-mode .logo {
+            text-shadow: none;
         }
 
         .tagline {
@@ -64,16 +86,123 @@
             opacity: 0.7;
         }
 
+        /* Search bar styling */
+        .search-container {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        body.light-mode .search-bar {
+            background: rgba(0, 102, 204, 0.05);
+            color: #333;
+            border-color: #0066cc;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.light-mode .search-bar::placeholder {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Search results dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(27, 45, 77, 0.95);
+            border: 2px solid var(--accent);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1001;
+            margin-top: -2px;
+        }
+
+        body.light-mode .search-results {
+            background: rgba(240, 240, 240, 0.95);
+            border-color: #0066cc;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .search-result-item:hover {
+            background: rgba(0, 212, 255, 0.2);
+            padding-left: 1.5rem;
+        }
+
+        body.light-mode .search-result-item:hover {
+            background: rgba(0, 102, 204, 0.1);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: var(--text-dark);
+            transform: rotate(20deg);
+        }
+
         .header-info {
             text-align: right;
-        }
-
-        .header-info p {
             font-size: 0.95rem;
             color: var(--text-light);
+            white-space: nowrap;
         }
 
-        /* Main Container */
+        /* ==================== MAIN CONTAINER ==================== */
         .container {
             display: flex;
             height: calc(100vh - 80px);
@@ -81,7 +210,7 @@
             padding: 1rem;
         }
 
-        /* Map Area */
+        /* Map container */
         .map-container {
             flex: 1;
             background: rgba(27, 45, 77, 0.5);
@@ -92,17 +221,22 @@
             cursor: grab;
         }
 
+        body.light-mode .map-container {
+            background: rgba(240, 240, 240, 0.8);
+            border-color: #0066cc;
+        }
+
         .map-container:active {
             cursor: grabbing;
         }
 
-        canvas {
+        svg {
             display: block;
             width: 100%;
             height: 100%;
         }
 
-        /* Tooltip */
+        /* ==================== TOOLTIP STYLES ==================== */
         .tooltip {
             position: fixed;
             background: rgba(10, 20, 40, 0.95);
@@ -111,9 +245,14 @@
             padding: 1rem;
             pointer-events: none;
             z-index: 1000;
-            max-width: 250px;
+            max-width: 300px;
             box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
             display: none;
+        }
+
+        body.light-mode .tooltip {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #0066cc;
         }
 
         .tooltip.active {
@@ -134,18 +273,27 @@
             font-size: 0.85rem;
             color: var(--text-light);
             line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .tooltip-fact {
+            font-size: 0.8rem;
+            color: var(--success);
+            font-style: italic;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
         }
 
         .tooltip-hint {
             font-size: 0.75rem;
-            color: var(--success);
+            color: var(--warning);
             margin-top: 0.5rem;
             font-style: italic;
         }
 
-        /* Info Panel */
+        /* ==================== INFO PANEL STYLES ==================== */
         .info-panel {
-            width: 350px;
+            width: 380px;
             background: rgba(27, 45, 77, 0.8);
             border: 2px solid var(--accent);
             border-radius: 12px;
@@ -153,6 +301,12 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .info-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #0066cc;
         }
 
         .info-panel::-webkit-scrollbar {
@@ -187,6 +341,11 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        body.light-mode .panel-title {
+            color: #0066cc;
+            text-shadow: none;
         }
 
         .panel-subtitle {
@@ -239,6 +398,11 @@
             font-size: 0.9rem;
         }
 
+        body.light-mode .rank-item {
+            background: rgba(0, 102, 204, 0.05);
+            border-left-color: #0066cc;
+        }
+
         .rank-label {
             font-weight: 600;
             color: var(--text-light);
@@ -250,60 +414,7 @@
             font-size: 1.1rem;
         }
 
-        .rank-badge {
-            display: inline-block;
-            background: var(--accent);
-            color: var(--text-dark);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .rank-badge.gold {
-            background: #ffd700;
-        }
-
-        .rank-badge.silver {
-            background: #c0c0c0;
-        }
-
-        .rank-badge.bronze {
-            background: #cd7f32;
-        }
-
-        .relations-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .relation-tag {
-            display: inline-block;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .relation-tag.ally {
-            border-color: var(--success);
-            color: var(--success);
-            background: rgba(0, 255, 136, 0.1);
-        }
-
-        .relation-tag.foe {
-            border-color: var(--danger);
-            color: var(--danger);
-            background: rgba(255, 68, 68, 0.1);
-        }
-
-        /* Animations */
+        /* ==================== ANIMATIONS ==================== */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -324,16 +435,32 @@
             }
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .glow {
             animation: glow 1.5s ease-in-out infinite;
         }
 
-        /* Controls */
+        /* ==================== CONTROLS ==================== */
         .controls {
             position: absolute;
             bottom: 20px;
             right: 20px;
             display: flex;
+            flex-direction: column;
             gap: 0.8rem;
             z-index: 40;
         }
@@ -360,7 +487,35 @@
             transform: scale(1.1);
         }
 
-        /* Responsive */
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+        }
+
+        .loading.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 212, 255, 0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 1200px) {
             .container {
                 flex-direction: column;
@@ -374,24 +529,71 @@
             .map-container {
                 flex: 1;
             }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
         }
 
-        /* Neon effect */
-        .neon-text {
-            text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .header-info {
+                display: none;
+            }
+
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .controls {
+                bottom: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header Section -->
     <header>
         <div class="header-content">
             <div>
                 <div class="logo">🌍 GLOBAL EXPLORER</div>
-                <div class="tagline">Explore nations, discover insights</div>
+                <div class="tagline">Discover countries, explore world data</div>
             </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-bar" 
+                    id="searchBar" 
+                    placeholder="Search for a country..."
+                    autocomplete="off"
+                >
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Theme Toggle & Info -->
+            <div class="header-controls">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
+            </div>
+
             <div class="header-info">
-                <p><span id="currentCountry">Hover over a country</span></p>
+                <p id="currentCountry">👆 Hover over a country</p>
             </div>
         </div>
     </header>
@@ -423,613 +625,628 @@
     <div class="tooltip" id="tooltip">
         <div class="tooltip-country" id="tooltipCountry">Country</div>
         <div class="tooltip-info" id="tooltipInfo">Info</div>
-        <div class="tooltip-hint">Click for details</div>
+        <div class="tooltip-fact" id="tooltipFact">Fact</div>
+        <div class="tooltip-hint">💡 Click for details</div>
     </div>
 
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- D3.js and TopoJSON Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
 
+    <!-- Main Application Script -->
     <script>
-        // ==================== COMPREHENSIVE COUNTRY DATABASE ====================
-        const countryData = {
+        // ==================== GLOBAL STATE ====================
+        const appState = {
+            selectedCountry: null,
+            isDarkMode: true,
+            countryData: {},
+            allCountries: [],
+            zoomLevel: 1,
+            panX: 0,
+            panY: 0
+        };
+
+        // ==================== COUNTRY DATABASE ====================
+        // This is a comprehensive database with unique facts for each country
+        const countryDatabase = {
             'United States': {
                 flag: '🇺🇸',
-                gdp: { rank: 1, value: '$27.4T' },
-                gdpPerCapita: { rank: 6, value: '$82,500' },
-                happinessIndex: { rank: 15, score: 7.1 },
-                allies: ['UK', 'Canada', 'Japan', 'South Korea', 'Australia'],
-                foes: ['China', 'Russia', 'Iran', 'North Korea'],
+                gdp: '$27.4T',
+                gdpPerCapita: '$82,500',
+                happinessIndex: 7.1,
                 population: '331M',
                 capital: 'Washington DC',
-                region: 'North America'
+                region: 'North America',
+                fact: 'Home to the world\'s largest economy and tech innovation hub'
             },
             'China': {
                 flag: '🇨🇳',
-                gdp: { rank: 2, value: '$17.9T' },
-                gdpPerCapita: { rank: 72, value: '$12,720' },
-                happinessIndex: { rank: 78, score: 5.5 },
-                allies: ['Russia', 'Pakistan', 'North Korea', 'Iran'],
-                foes: ['USA', 'Japan', 'India', 'Australia'],
+                gdp: '$17.9T',
+                gdpPerCapita: '$12,720',
+                happinessIndex: 5.5,
                 population: '1.4B',
                 capital: 'Beijing',
-                region: 'East Asia'
+                region: 'East Asia',
+                fact: 'The Great Wall stretches over 13,000 miles across northern China'
             },
             'Japan': {
                 flag: '🇯🇵',
-                gdp: { rank: 3, value: '$4.2T' },
-                gdpPerCapita: { rank: 23, value: '$33,800' },
-                happinessIndex: { rank: 51, score: 6.2 },
-                allies: ['USA', 'South Korea', 'Australia'],
-                foes: ['China', 'Russia'],
+                gdp: '$4.2T',
+                gdpPerCapita: '$33,800',
+                happinessIndex: 6.2,
                 population: '125M',
                 capital: 'Tokyo',
-                region: 'East Asia'
+                region: 'East Asia',
+                fact: 'Has the world\'s fastest trains with bullet speeds over 300 km/h'
             },
             'Germany': {
                 flag: '🇩🇪',
-                gdp: { rank: 4, value: '$4.0T' },
-                gdpPerCapita: { rank: 18, value: '$48,900' },
-                happinessIndex: { rank: 24, score: 6.9 },
-                allies: ['France', 'EU', 'USA'],
-                foes: [],
+                gdp: '$4.0T',
+                gdpPerCapita: '$48,900',
+                happinessIndex: 6.9,
                 population: '83M',
                 capital: 'Berlin',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Oktoberfest celebrates Bavarian culture with millions of visitors yearly'
             },
             'United Kingdom': {
                 flag: '🇬🇧',
-                gdp: { rank: 5, value: '$3.3T' },
-                gdpPerCapita: { rank: 20, value: '$46,200' },
-                happinessIndex: { rank: 19, score: 7.0 },
-                allies: ['USA', 'EU', 'Canada', 'Australia'],
-                foes: [],
+                gdp: '$3.3T',
+                gdpPerCapita: '$46,200',
+                happinessIndex: 7.0,
                 population: '67M',
                 capital: 'London',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Big Ben is one of the most recognizable clock towers in the world'
             },
             'France': {
                 flag: '🇫🇷',
-                gdp: { rank: 7, value: '$2.8T' },
-                gdpPerCapita: { rank: 25, value: '$42,700' },
-                happinessIndex: { rank: 21, score: 6.9 },
-                allies: ['Germany', 'EU', 'USA'],
-                foes: [],
+                gdp: '$2.8T',
+                gdpPerCapita: '$42,700',
+                happinessIndex: 6.9,
                 population: '68M',
                 capital: 'Paris',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'The Eiffel Tower attracts over 7 million visitors every year'
             },
             'India': {
                 flag: '🇮🇳',
-                gdp: { rank: 6, value: '$3.7T' },
-                gdpPerCapita: { rank: 150, value: '$2,550' },
-                happinessIndex: { rank: 126, score: 5.2 },
-                allies: ['Russia', 'Japan', 'USA'],
-                foes: ['Pakistan', 'China'],
+                gdp: '$3.7T',
+                gdpPerCapita: '$2,550',
+                happinessIndex: 5.2,
                 population: '1.4B',
                 capital: 'New Delhi',
-                region: 'South Asia'
+                region: 'South Asia',
+                fact: 'Bollywood produces more films annually than Hollywood'
             },
             'Russia': {
                 flag: '🇷🇺',
-                gdp: { rank: 11, value: '$1.8T' },
-                gdpPerCapita: { rank: 68, value: '$11,600' },
-                happinessIndex: { rank: 88, score: 5.0 },
-                allies: ['China', 'India', 'Iran'],
-                foes: ['USA', 'UK', 'EU', 'Japan'],
+                gdp: '$1.8T',
+                gdpPerCapita: '$11,600',
+                happinessIndex: 5.0,
                 population: '144M',
                 capital: 'Moscow',
-                region: 'Europe/Asia'
+                region: 'Europe/Asia',
+                fact: 'Russia spans 11 time zones, the most of any country in the world'
             },
             'Brazil': {
                 flag: '🇧🇷',
-                gdp: { rank: 9, value: '$2.1T' },
-                gdpPerCapita: { rank: 82, value: '$9,200' },
-                happinessIndex: { rank: 67, score: 5.9 },
-                allies: ['USA', 'Argentina', 'Chile'],
-                foes: [],
+                gdp: '$2.1T',
+                gdpPerCapita: '$9,200',
+                happinessIndex: 5.9,
                 population: '215M',
                 capital: 'Brasília',
-                region: 'South America'
+                region: 'South America',
+                fact: 'The Amazon rainforest produces 20% of the world\'s oxygen'
             },
             'Canada': {
                 flag: '🇨🇦',
-                gdp: { rank: 10, value: '$2.1T' },
-                gdpPerCapita: { rank: 15, value: '$54,700' },
-                happinessIndex: { rank: 14, score: 7.2 },
-                allies: ['USA', 'UK', 'Australia'],
-                foes: [],
+                gdp: '$2.1T',
+                gdpPerCapita: '$54,700',
+                happinessIndex: 7.2,
                 population: '39M',
                 capital: 'Ottawa',
-                region: 'North America'
+                region: 'North America',
+                fact: 'Niagara Falls provides 25% of North America\'s hydroelectric power'
             },
             'South Korea': {
                 flag: '🇰🇷',
-                gdp: { rank: 12, value: '$1.8T' },
-                gdpPerCapita: { rank: 29, value: '$32,400' },
-                happinessIndex: { rank: 59, score: 5.8 },
-                allies: ['USA', 'Japan'],
-                foes: ['North Korea', 'China'],
+                gdp: '$1.8T',
+                gdpPerCapita: '$32,400',
+                happinessIndex: 5.8,
                 population: '52M',
                 capital: 'Seoul',
-                region: 'East Asia'
+                region: 'East Asia',
+                fact: 'South Korea has the world\'s fastest internet speeds'
             },
             'Australia': {
                 flag: '🇦🇺',
-                gdp: { rank: 13, value: '$1.7T' },
-                gdpPerCapita: { rank: 10, value: '$64,600' },
-                happinessIndex: { rank: 12, score: 7.2 },
-                allies: ['USA', 'UK', 'Japan'],
-                foes: ['China'],
+                gdp: '$1.7T',
+                gdpPerCapita: '$64,600',
+                happinessIndex: 7.2,
                 population: '26M',
                 capital: 'Canberra',
-                region: 'Oceania'
+                region: 'Oceania',
+                fact: 'The Great Barrier Reef is the world\'s largest coral reef system'
             },
             'Mexico': {
                 flag: '🇲🇽',
-                gdp: { rank: 15, value: '$1.3T' },
-                gdpPerCapita: { rank: 90, value: '$9,800' },
-                happinessIndex: { rank: 31, score: 6.6 },
-                allies: ['USA', 'Canada'],
-                foes: [],
+                gdp: '$1.3T',
+                gdpPerCapita: '$9,800',
+                happinessIndex: 6.6,
                 population: '128M',
                 capital: 'Mexico City',
-                region: 'North America'
+                region: 'North America',
+                fact: 'Mexico City is built on an ancient Aztec capital, Tenochtitlan'
             },
             'Italy': {
                 flag: '🇮🇹',
-                gdp: { rank: 8, value: '$2.0T' },
-                gdpPerCapita: { rank: 28, value: '$33,800' },
-                happinessIndex: { rank: 28, score: 6.8 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$2.0T',
+                gdpPerCapita: '$33,800',
+                happinessIndex: 6.8,
                 population: '58M',
                 capital: 'Rome',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'The Colosseum in Rome could hold 50,000 spectators in ancient times'
             },
             'Spain': {
                 flag: '🇪🇸',
-                gdp: { rank: 14, value: '$1.4T' },
-                gdpPerCapita: { rank: 32, value: '$30,100' },
-                happinessIndex: { rank: 26, score: 6.8 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$1.4T',
+                gdpPerCapita: '$30,100',
+                happinessIndex: 6.8,
                 population: '47M',
                 capital: 'Madrid',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Spain invented chocolate by mixing cacao with sugar and spices'
             },
             'Egypt': {
                 flag: '🇪🇬',
-                gdp: { rank: 32, value: '$476B' },
-                gdpPerCapita: { rank: 112, value: '$4,500' },
-                happinessIndex: { rank: 115, score: 5.3 },
-                allies: ['USA', 'Saudi Arabia'],
-                foes: ['Israel'],
+                gdp: '$476B',
+                gdpPerCapita: '$4,500',
+                happinessIndex: 5.3,
                 population: '104M',
                 capital: 'Cairo',
-                region: 'Africa'
+                region: 'Africa',
+                fact: 'The pyramids of Giza are among the oldest structures on Earth'
             },
             'Saudi Arabia': {
                 flag: '🇸🇦',
-                gdp: { rank: 18, value: '$1.2T' },
-                gdpPerCapita: { rank: 30, value: '$36,200' },
-                happinessIndex: { rank: 76, score: 5.5 },
-                allies: ['USA', 'UAE', 'Egypt'],
-                foes: ['Iran'],
+                gdp: '$1.2T',
+                gdpPerCapita: '$36,200',
+                happinessIndex: 5.5,
                 population: '36M',
                 capital: 'Riyadh',
-                region: 'Middle East'
+                region: 'Middle East',
+                fact: 'Saudi Arabia has the second-largest proven oil reserves in the world'
             },
             'Nigeria': {
                 flag: '🇳🇬',
-                gdp: { rank: 33, value: '$470B' },
-                gdpPerCapita: { rank: 162, value: '$2,100' },
-                happinessIndex: { rank: 121, score: 5.1 },
-                allies: ['USA', 'UK'],
-                foes: [],
+                gdp: '$470B',
+                gdpPerCapita: '$2,100',
+                happinessIndex: 5.1,
                 population: '223M',
                 capital: 'Abuja',
-                region: 'Africa'
+                region: 'Africa',
+                fact: 'Nigeria is the most populous country in Africa'
             },
             'South Africa': {
                 flag: '🇿🇦',
-                gdp: { rank: 35, value: '$405B' },
-                gdpPerCapita: { rank: 118, value: '$6,700' },
-                happinessIndex: { rank: 79, score: 5.0 },
-                allies: ['BRICS', 'USA'],
-                foes: [],
+                gdp: '$405B',
+                gdpPerCapita: '$6,700',
+                happinessIndex: 5.0,
                 population: '60M',
                 capital: 'Pretoria',
-                region: 'Africa'
+                region: 'Africa',
+                fact: 'South Africa is the only country with three capitals'
             },
             'Argentina': {
                 flag: '🇦🇷',
-                gdp: { rank: 25, value: '$632B' },
-                gdpPerCapita: { rank: 75, value: '$14,100' },
-                happinessIndex: { rank: 18, score: 7.0 },
-                allies: ['Brazil', 'Chile'],
-                foes: [],
+                gdp: '$632B',
+                gdpPerCapita: '$14,100',
+                happinessIndex: 7.0,
                 population: '46M',
                 capital: 'Buenos Aires',
-                region: 'South America'
+                region: 'South America',
+                fact: 'Argentina is known for tango dancing originating in Buenos Aires'
             },
             'Turkey': {
                 flag: '🇹🇷',
-                gdp: { rank: 21, value: '$905B' },
-                gdpPerCapita: { rank: 98, value: '$10,500' },
-                happinessIndex: { rank: 110, score: 5.2 },
-                allies: ['USA', 'NATO'],
-                foes: ['Armenia', 'Syria'],
+                gdp: '$905B',
+                gdpPerCapita: '$10,500',
+                happinessIndex: 5.2,
                 population: '85M',
                 capital: 'Ankara',
-                region: 'Middle East/Europe'
+                region: 'Middle East/Europe',
+                fact: 'Turkey is the birthplace of many ancient civilizations'
             },
             'Iran': {
                 flag: '🇮🇷',
-                gdp: { rank: 27, value: '$597B' },
-                gdpPerCapita: { rank: 105, value: '$7,000' },
-                happinessIndex: { rank: 138, score: 4.9 },
-                allies: ['Russia', 'Syria', 'China'],
-                foes: ['USA', 'Saudi Arabia', 'Israel'],
+                gdp: '$597B',
+                gdpPerCapita: '$7,000',
+                happinessIndex: 4.9,
                 population: '91M',
                 capital: 'Tehran',
-                region: 'Middle East'
+                region: 'Middle East',
+                fact: 'Persia, modern-day Iran, has one of the world\'s oldest civilizations'
             },
             'Indonesia': {
                 flag: '🇮🇩',
-                gdp: { rank: 16, value: '$1.2T' },
-                gdpPerCapita: { rank: 125, value: '$4,250' },
-                happinessIndex: { rank: 71, score: 5.9 },
-                allies: ['USA', 'Japan'],
-                foes: [],
+                gdp: '$1.2T',
+                gdpPerCapita: '$4,250',
+                happinessIndex: 5.9,
                 population: '277M',
                 capital: 'Jakarta',
-                region: 'Southeast Asia'
+                region: 'Southeast Asia',
+                fact: 'Indonesia is the world\'s largest archipelago with 17,000+ islands'
             },
             'Pakistan': {
                 flag: '🇵🇰',
-                gdp: { rank: 27, value: '$595B' },
-                gdpPerCapita: { rank: 151, value: '$2,650' },
-                happinessIndex: { rank: 140, score: 4.9 },
-                allies: ['China', 'Saudi Arabia'],
-                foes: ['India'],
+                gdp: '$595B',
+                gdpPerCapita: '$2,650',
+                happinessIndex: 4.9,
                 population: '240M',
                 capital: 'Islamabad',
-                region: 'South Asia'
-            },
-            'Nigeria': {
-                flag: '🇳🇬',
-                gdp: { rank: 33, value: '$470B' },
-                gdpPerCapita: { rank: 162, value: '$2,100' },
-                happinessIndex: { rank: 121, score: 5.1 },
-                allies: ['USA', 'UK'],
-                foes: [],
-                population: '223M',
-                capital: 'Abuja',
-                region: 'Africa'
+                region: 'South Asia',
+                fact: 'Mount K2, the world\'s second-highest peak, is in Pakistan'
             },
             'Thailand': {
                 flag: '🇹🇭',
-                gdp: { rank: 28, value: '$475B' },
-                gdpPerCapita: { rank: 90, value: '$6,850' },
-                happinessIndex: { rank: 91, score: 5.4 },
-                allies: ['USA', 'Japan'],
-                foes: [],
+                gdp: '$475B',
+                gdpPerCapita: '$6,850',
+                happinessIndex: 5.4,
                 population: '72M',
                 capital: 'Bangkok',
-                region: 'Southeast Asia'
+                region: 'Southeast Asia',
+                fact: 'Thailand is the only Southeast Asian country never colonized'
             },
             'Vietnam': {
                 flag: '🇻🇳',
-                gdp: { rank: 30, value: '$429B' },
-                gdpPerCapita: { rank: 128, value: '$4,340' },
-                happinessIndex: { rank: 95, score: 5.5 },
-                allies: ['USA', 'China'],
-                foes: [],
+                gdp: '$429B',
+                gdpPerCapita: '$4,340',
+                happinessIndex: 5.5,
                 population: '99M',
                 capital: 'Hanoi',
-                region: 'Southeast Asia'
+                region: 'Southeast Asia',
+                fact: 'Vietnam has the world\'s largest cave, Son Doong Cave'
             },
             'Philippines': {
                 flag: '🇵🇭',
-                gdp: { rank: 31, value: '$505B' },
-                gdpPerCapita: { rank: 140, value: '$4,580' },
-                happinessIndex: { rank: 60, score: 5.9 },
-                allies: ['USA', 'Japan'],
-                foes: [],
+                gdp: '$505B',
+                gdpPerCapita: '$4,580',
+                happinessIndex: 5.9,
                 population: '120M',
                 capital: 'Manila',
-                region: 'Southeast Asia'
+                region: 'Southeast Asia',
+                fact: 'The Philippines has over 7,600 islands'
             },
             'Malaysia': {
                 flag: '🇲🇾',
-                gdp: { rank: 34, value: '$430B' },
-                gdpPerCapita: { rank: 85, value: '$13,500' },
-                happinessIndex: { rank: 85, score: 5.7 },
-                allies: ['USA', 'China'],
-                foes: [],
+                gdp: '$430B',
+                gdpPerCapita: '$13,500',
+                happinessIndex: 5.7,
                 population: '34M',
                 capital: 'Kuala Lumpur',
-                region: 'Southeast Asia'
+                region: 'Southeast Asia',
+                fact: 'Petronas Twin Towers were once the world\'s tallest buildings'
             },
             'Greece': {
                 flag: '🇬🇷',
-                gdp: { rank: 37, value: '$219B' },
-                gdpPerCapita: { rank: 42, value: '$20,900' },
-                happinessIndex: { rank: 58, score: 6.0 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$219B',
+                gdpPerCapita: '$20,900',
+                happinessIndex: 6.0,
                 population: '10.5M',
                 capital: 'Athens',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Greece is the birthplace of Western philosophy and democracy'
             },
             'Portugal': {
                 flag: '🇵🇹',
-                gdp: { rank: 41, value: '$287B' },
-                gdpPerCapita: { rank: 37, value: '$26,600' },
-                happinessIndex: { rank: 31, score: 6.6 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$287B',
+                gdpPerCapita: '$26,600',
+                happinessIndex: 6.6,
                 population: '10.4M',
                 capital: 'Lisbon',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Portugal is one of the world\'s oldest nations, founded in 1297'
             },
             'Netherlands': {
                 flag: '🇳🇱',
-                gdp: { rank: 19, value: '$1.1T' },
-                gdpPerCapita: { rank: 7, value: '$59,300' },
-                happinessIndex: { rank: 5, score: 7.4 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$1.1T',
+                gdpPerCapita: '$59,300',
+                happinessIndex: 7.4,
                 population: '17.6M',
                 capital: 'Amsterdam',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Amsterdam has over 1,200 bridges, the most of any city'
             },
             'Belgium': {
                 flag: '🇧🇪',
-                gdp: { rank: 26, value: '$680B' },
-                gdpPerCapita: { rank: 13, value: '$57,200' },
-                happinessIndex: { rank: 17, score: 7.0 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$680B',
+                gdpPerCapita: '$57,200',
+                happinessIndex: 7.0,
                 population: '11.6M',
                 capital: 'Brussels',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Belgium produces over 200,000 tons of chocolate annually'
             },
             'Austria': {
                 flag: '🇦🇹',
-                gdp: { rank: 40, value: '$516B' },
-                gdpPerCapita: { rank: 11, value: '$57,600' },
-                happinessIndex: { rank: 11, score: 7.3 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$516B',
+                gdpPerCapita: '$57,600',
+                happinessIndex: 7.3,
                 population: '9M',
                 capital: 'Vienna',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Vienna has been ranked the most livable city multiple times'
             },
             'Switzerland': {
                 flag: '🇨🇭',
-                gdp: { rank: 22, value: '$890B' },
-                gdpPerCapita: { rank: 2, value: '$92,200' },
-                happinessIndex: { rank: 6, score: 7.4 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$890B',
+                gdpPerCapita: '$92,200',
+                happinessIndex: 7.4,
                 population: '8.7M',
                 capital: 'Bern',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Switzerland hasn\'t been in a military conflict since 1815'
             },
             'Sweden': {
                 flag: '🇸🇪',
-                gdp: { rank: 29, value: '$614B' },
-                gdpPerCapita: { rank: 8, value: '$59,000' },
-                happinessIndex: { rank: 7, score: 7.4 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$614B',
+                gdpPerCapita: '$59,000',
+                happinessIndex: 7.4,
                 population: '10.5M',
                 capital: 'Stockholm',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Sweden has been at peace for over 200 years'
             },
             'Norway': {
                 flag: '🇳🇴',
-                gdp: { rank: 38, value: '$445B' },
-                gdpPerCapita: { rank: 1, value: '$105,300' },
-                happinessIndex: { rank: 2, score: 7.7 },
-                allies: ['USA', 'NATO'],
-                foes: [],
+                gdp: '$445B',
+                gdpPerCapita: '$105,300',
+                happinessIndex: 7.7,
                 population: '5.5M',
                 capital: 'Oslo',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Norway has the world\'s largest sovereign wealth fund'
             },
             'Denmark': {
                 flag: '🇩🇰',
-                gdp: { rank: 43, value: '$414B' },
-                gdpPerCapita: { rank: 4, value: '$88,200' },
-                happinessIndex: { rank: 3, score: 7.6 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$414B',
+                gdpPerCapita: '$88,200',
+                happinessIndex: 7.6,
                 population: '5.9M',
                 capital: 'Copenhagen',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Denmark is one of the world\'s happiest countries'
             },
             'Finland': {
                 flag: '🇫🇮',
-                gdp: { rank: 44, value: '$380B' },
-                gdpPerCapita: { rank: 9, value: '$68,900' },
-                happinessIndex: { rank: 1, score: 7.8 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$380B',
+                gdpPerCapita: '$68,900',
+                happinessIndex: 7.8,
                 population: '5.6M',
                 capital: 'Helsinki',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Finland consistently ranks as the happiest country in the world'
             },
             'Poland': {
                 flag: '🇵🇱',
-                gdp: { rank: 39, value: '$827B' },
-                gdpPerCapita: { rank: 44, value: '$21,000' },
-                happinessIndex: { rank: 43, score: 6.1 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$827B',
+                gdpPerCapita: '$21,000',
+                happinessIndex: 6.1,
                 population: '38M',
                 capital: 'Warsaw',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Warsaw was completely rebuilt after WWII destruction'
             },
             'Czech Republic': {
                 flag: '🇨🇿',
-                gdp: { rank: 46, value: '$301B' },
-                gdpPerCapita: { rank: 34, value: '$27,800' },
-                happinessIndex: { rank: 42, score: 6.1 },
-                allies: ['EU', 'USA'],
-                foes: [],
+                gdp: '$301B',
+                gdpPerCapita: '$27,800',
+                happinessIndex: 6.1,
                 population: '10.5M',
                 capital: 'Prague',
-                region: 'Europe'
+                region: 'Europe',
+                fact: 'Prague\'s astronomical clock is one of the oldest in the world'
             }
         };
 
-        // ==================== D3.js MAP SETUP ====================
-        const width = document.querySelector('.map-container').clientWidth;
-        const height = document.querySelector('.map-container').clientHeight;
-
-        const svg = d3.select('#mapSVG')
-            .attr('width', width)
-            .attr('height', height);
-
-        // Add gradients
-        const defs = svg.append('defs');
-        defs.append('linearGradient')
-            .attr('id', 'countryGradient')
-            .attr('x1', '0%').attr('y1', '0%')
-            .attr('x2', '100%').attr('y2', '100%')
-            .selectAll('stop')
-            .data([
-                { offset: '0%', color: '#ff9933' },
-                { offset: '100%', color: '#ff6600' }
-            ])
-            .enter().append('stop')
-            .attr('offset', d => d.offset)
-            .attr('stop-color', d => d.color);
-
-        defs.append('linearGradient')
-            .attr('id', 'hoverGradient')
-            .attr('x1', '0%').attr('y1', '0%')
-            .attr('x2', '100%').attr('y2', '100%')
-            .selectAll('stop')
-            .data([
-                { offset: '0%', color: '#ffcc00' },
-                { offset: '100%', color: '#ffaa00' }
-            ])
-            .enter().append('stop')
-            .attr('offset', d => d.offset)
-            .attr('stop-color', d => d.color);
-
-        const projection = d3.geoMercator()
-            .fitSize([width, height], { type: 'Sphere' });
-
-        const pathGenerator = d3.geoPath().projection(projection);
-
-        let selectedCountry = null;
-
-        // Load world map data
-        d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(topology => {
-            const countries = feature(topology, topology.objects.countries).features;
-
-            svg.selectAll('.country')
-                .data(countries)
-                .enter()
-                .append('path')
-                .attr('class', 'country')
-                .attr('d', pathGenerator)
-                .attr('fill', 'url(#countryGradient)')
-                .attr('stroke', '#0a1428')
-                .attr('stroke-width', 0.5)
-                .style('cursor', 'pointer')
-                .on('mouseover', function(event, d) {
-                    const name = getCountryName(d.id);
-                    if (name && countryData[name]) {
-                        d3.select(this).attr('fill', 'url(#hoverGradient)');
-                        showTooltip(event, name);
-                    }
-                })
-                .on('mouseout', function() {
-                    d3.select(this).attr('fill', d => selectedCountry === getCountryName(d.id) ? 'url(#hoverGradient)' : 'url(#countryGradient)');
-                    hideTooltip();
-                })
-                .on('click', function(event, d) {
-                    const name = getCountryName(d.id);
-                    if (name && countryData[name]) {
-                        selectCountry(name);
-                    }
-                });
-        }).catch(err => {
-            console.error('Error loading world map data:', err);
-            svg.append('text')
-                .attr('x', width / 2)
-                .attr('y', height / 2)
-                .attr('text-anchor', 'middle')
-                .attr('fill', '#00d4ff')
-                .text('Map data loading failed. Please check your internet connection.');
-        });
-
-        // ==================== COUNTRY NAME MAPPING ====================
+        // ==================== COUNTRY ID MAPPING ====================
+        // Maps TopoJSON country IDs to country names
         const countryIdMap = {
-            840: 'United States',
-            156: 'China',
-            392: 'Japan',
-            276: 'Germany',
-            826: 'United Kingdom',
-            250: 'France',
-            356: 'India',
-            643: 'Russia',
-            76: 'Brazil',
-            124: 'Canada',
-            410: 'South Korea',
-            36: 'Australia',
-            484: 'Mexico',
-            380: 'Italy',
-            724: 'Spain',
-            818: 'Egypt',
-            682: 'Saudi Arabia',
-            566: 'Nigeria',
-            710: 'South Africa',
-            32: 'Argentina',
-            792: 'Turkey',
-            364: 'Iran',
-            360: 'Indonesia',
-            586: 'Pakistan',
-            764: 'Thailand',
-            704: 'Vietnam',
-            608: 'Philippines',
-            458: 'Malaysia',
-            300: 'Greece',
-            620: 'Portugal',
-            528: 'Netherlands',
-            56: 'Belgium',
-            40: 'Austria',
-            756: 'Switzerland',
-            752: 'Sweden',
-            578: 'Norway',
-            208: 'Denmark',
-            246: 'Finland',
-            616: 'Poland',
-            203: 'Czech Republic'
+            840: 'United States', 156: 'China', 392: 'Japan', 276: 'Germany', 826: 'United Kingdom',
+            250: 'France', 356: 'India', 643: 'Russia', 76: 'Brazil', 124: 'Canada', 410: 'South Korea',
+            36: 'Australia', 484: 'Mexico', 380: 'Italy', 724: 'Spain', 818: 'Egypt', 682: 'Saudi Arabia',
+            566: 'Nigeria', 710: 'South Africa', 32: 'Argentina', 792: 'Turkey', 364: 'Iran',
+            360: 'Indonesia', 586: 'Pakistan', 764: 'Thailand', 704: 'Vietnam', 608: 'Philippines',
+            458: 'Malaysia', 300: 'Greece', 620: 'Portugal', 528: 'Netherlands', 56: 'Belgium',
+            40: 'Austria', 756: 'Switzerland', 752: 'Sweden', 578: 'Norway', 208: 'Denmark',
+            246: 'Finland', 616: 'Poland', 203: 'Czech Republic'
         };
 
-        function getCountryName(id) {
-            return countryIdMap[id] || null;
+        // ==================== INITIALIZATION ====================
+        function init() {
+            appState.countryData = countryDatabase;
+            appState.allCountries = Object.keys(countryDatabase);
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Load the world map
+            loadWorldMap();
+            
+            // Load saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                toggleTheme();
+            }
         }
 
-        // ==================== TOOLTIP ====================
-        function showTooltip(event, country) {
-            const tooltip = document.getElementById('tooltip');
-            const data = countryData[country];
+        // ==================== EVENT LISTENERS ====================
+        function setupEventListeners() {
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-            if (data) {
-                document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
-                document.getElementById('tooltipInfo').textContent = `${data.capital} • Population: ${data.population}`;
+            // Search functionality
+            const searchBar = document.getElementById('searchBar');
+            searchBar.addEventListener('input', handleSearch);
+            searchBar.addEventListener('focus', () => {
+                if (searchBar.value) {
+                    document.getElementById('searchResults').classList.add('active');
+                }
+            });
 
-                tooltip.style.left = (event.pageX + 15) + 'px';
-                tooltip.style.top = (event.pageY - 20) + 'px';
-                tooltip.classList.add('active');
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    document.getElementById('searchResults').classList.remove('active');
+                }
+            });
+
+            // Control buttons
+            document.getElementById('resetBtn').addEventListener('click', resetView);
+            document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+            document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+        }
+
+        // ==================== THEME TOGGLE ====================
+        function toggleTheme() {
+            appState.isDarkMode = !appState.isDarkMode;
+            document.body.classList.toggle('light-mode');
+            document.getElementById('themeToggle').textContent = appState.isDarkMode ? '🌙' : '☀️';
+            localStorage.setItem('theme', appState.isDarkMode ? 'dark' : 'light');
+        }
+
+        // ==================== SEARCH FUNCTIONALITY ====================
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (!query) {
+                resultsContainer.classList.remove('active');
+                resultsContainer.innerHTML = '';
+                return;
             }
+
+            const filtered = appState.allCountries.filter(country =>
+                country.toLowerCase().includes(query)
+            );
+
+            if (filtered.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-result-item">No countries found</div>';
+            } else {
+                resultsContainer.innerHTML = filtered.map(country =>
+                    `<div class="search-result-item" data-country="${country}">
+                        ${appState.countryData[country].flag} ${country}
+                    </div>`
+                ).join('');
+
+                // Add click handlers to results
+                resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
+                    if (item.dataset.country) {
+                        item.addEventListener('click', () => {
+                            selectCountry(item.dataset.country);
+                            document.getElementById('searchBar').value = '';
+                            resultsContainer.classList.remove('active');
+                        });
+                    }
+                });
+            }
+
+            resultsContainer.classList.add('active');
+        }
+
+        // ==================== WORLD MAP SETUP ====================
+        function loadWorldMap() {
+            const container = document.querySelector('.map-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const svg = d3.select('#mapSVG')
+                .attr('width', width)
+                .attr('height', height);
+
+            // Add background
+            svg.append('rect')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('fill', appState.isDarkMode ? 'rgba(10, 20, 40, 0.3)' : 'rgba(240, 240, 240, 0.3)');
+
+            // Setup projection
+            const projection = d3.geoMercator()
+                .fitSize([width, height], { type: 'Sphere' });
+
+            const pathGenerator = d3.geoPath().projection(projection);
+
+            // Load world map data
+            d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(topology => {
+                const countries = feature(topology, topology.objects.countries).features;
+
+                svg.selectAll('.country')
+                    .data(countries)
+                    .enter()
+                    .append('path')
+                    .attr('class', 'country')
+                    .attr('d', pathGenerator)
+                    .attr('fill', '#00aa66')
+                    .attr('stroke', appState.isDarkMode ? '#0a1428' : '#ffffff')
+                    .attr('stroke-width', 0.5)
+                    .style('cursor', 'pointer')
+                    .style('opacity', 0.8)
+                    .on('mouseover', function(event, d) {
+                        const name = countryIdMap[d.id];
+                        if (name && appState.countryData[name]) {
+                            d3.select(this).attr('fill', '#ffaa00').style('opacity', 1);
+                            showTooltip(event, name);
+                            document.getElementById('currentCountry').textContent = `👉 ${name.toUpperCase()}`;
+                        }
+                    })
+                    .on('mouseout', function(d) {
+                        const name = countryIdMap[d.id];
+                        const isSelected = appState.selectedCountry === name;
+                        d3.select(this)
+                            .attr('fill', isSelected ? '#ffaa00' : '#00aa66')
+                            .style('opacity', isSelected ? 1 : 0.8);
+                        hideTooltip();
+                        if (!appState.selectedCountry) {
+                            document.getElementById('currentCountry').textContent = '👆 Hover over a country';
+                        }
+                    })
+                    .on('click', function(event, d) {
+                        const name = countryIdMap[d.id];
+                        if (name && appState.countryData[name]) {
+                            selectCountry(name);
+                        }
+                    });
+            }).catch(err => {
+                console.error('Error loading map:', err);
+                svg.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height / 2)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', 'red')
+                    .text('Error loading map. Please refresh the page.');
+            });
+        }
+
+        // ==================== TOOLTIP MANAGEMENT ====================
+        function showTooltip(event, country) {
+            const data = appState.countryData[country];
+            if (!data) return;
+
+            const tooltip = document.getElementById('tooltip');
+            document.getElementById('tooltipCountry').textContent = `${data.flag} ${country}`;
+            document.getElementById('tooltipInfo').textContent = `Capital: ${data.capital} • Population: ${data.population}`;
+            document.getElementById('tooltipFact').textContent = `💡 ${data.fact}`;
+
+            tooltip.style.left = (event.pageX + 15) + 'px';
+            tooltip.style.top = (event.pageY - 20) + 'px';
+            tooltip.classList.add('active');
         }
 
         function hideTooltip() {
@@ -1038,8 +1255,8 @@
 
         // ==================== COUNTRY SELECTION ====================
         function selectCountry(country) {
-            selectedCountry = country;
-            const data = countryData[country];
+            appState.selectedCountry = country;
+            const data = appState.countryData[country];
 
             document.getElementById('currentCountry').textContent = `${data.flag} ${country.toUpperCase()}`;
 
@@ -1052,15 +1269,12 @@
                 <div class="info-section">
                     <div class="section-title">📊 Economic Indicators</div>
                     <div class="rank-item">
-                        <span class="rank-label">GDP Rank</span>
-                        <span class="rank-value">#${data.gdp.rank} ${data.gdp.value}</span>
+                        <span class="rank-label">GDP</span>
+                        <span class="rank-value">${data.gdp}</span>
                     </div>
                     <div class="rank-item">
                         <span class="rank-label">GDP Per Capita</span>
-                        <span class="rank-value">#${data.gdpPerCapita.rank}</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-light); padding: 0.5rem 0.8rem; text-align: center; background: rgba(0, 212, 255, 0.05); border-radius: 4px;">
-                        ${data.gdpPerCapita.value}
+                        <span class="rank-value">${data.gdpPerCapita}</span>
                     </div>
                 </div>
 
@@ -1068,10 +1282,7 @@
                     <div class="section-title">😊 Quality of Life</div>
                     <div class="rank-item">
                         <span class="rank-label">Happiness Index</span>
-                        <span class="rank-value">#${data.happinessIndex.rank}</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--success); padding: 0.5rem 0.8rem; text-align: center; background: rgba(0, 255, 136, 0.1); border-radius: 4px; font-weight: 700;">
-                        ${data.happinessIndex.score}/10.0
+                        <span class="rank-value">${data.happinessIndex}/10</span>
                     </div>
                 </div>
 
@@ -1086,67 +1297,81 @@
                         <span class="rank-value">${data.capital}</span>
                     </div>
                 </div>
+
+                <div class="info-section">
+                    <div class="section-title">💡 Fun Fact</div>
+                    <div style="font-size: 0.9rem; color: var(--success); padding: 0.8rem; background: rgba(0, 255, 136, 0.1); border-radius: 4px; border-left: 3px solid var(--success);">
+                        ${data.fact}
+                    </div>
+                </div>
             `;
-
-            if (data.allies.length > 0) {
-                html += `
-                    <div class="info-section">
-                        <div class="section-title">🤝 Allies</div>
-                        <div class="relations-list">
-                            ${data.allies.map(ally => `<span class="relation-tag ally">${ally}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            if (data.foes.length > 0) {
-                html += `
-                    <div class="info-section">
-                        <div class="section-title">⚔️ Foes</div>
-                        <div class="relations-list">
-                            ${data.foes.map(foe => `<span class="relation-tag foe">${foe}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-            }
 
             document.getElementById('infoPanelContent').innerHTML = html;
             hideTooltip();
         }
 
         // ==================== CONTROLS ====================
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            selectedCountry = null;
-            document.getElementById('currentCountry').textContent = 'Hover over a country';
+        function resetView() {
+            appState.selectedCountry = null;
+            appState.zoomLevel = 1;
+            appState.panX = 0;
+            appState.panY = 0;
+
+            document.getElementById('currentCountry').textContent = '👆 Hover over a country';
+            document.getElementById('searchBar').value = '';
             document.getElementById('infoPanelContent').innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon">🌐</div>
                     <p>Click on a country to view detailed information</p>
                 </div>
             `;
-        });
 
-        document.getElementById('zoomInBtn').addEventListener('click', () => {
-            svg.transition()
-                .duration(750)
-                .style('transform', 'scale(1.25)');
-        });
-
-        document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            svg.transition()
-                .duration(750)
-                .style('transform', 'scale(0.8)');
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            location.reload();
-        });
-
-        // Helper function from TopoJSON
-        function feature(topology, o) {
-            return o.type === 'GeometryCollection' ? { type: 'FeatureCollection', features: o.geometries.map((g, i) => ({ type: 'Feature', properties: o.properties?.[i], geometry: g })) } : { type: 'FeatureCollection', features: [{ type: 'Feature', properties: o.properties, geometry: o }] };
+            // Reset map colors
+            d3.selectAll('.country')
+                .attr('fill', '#00aa66')
+                .style('opacity', 0.8);
         }
+
+        function zoomIn() {
+            appState.zoomLevel = Math.min(appState.zoomLevel + 0.2, 4);
+            updateMapZoom();
+        }
+
+        function zoomOut() {
+            appState.zoomLevel = Math.max(appState.zoomLevel - 0.2, 1);
+            updateMapZoom();
+        }
+
+        function updateMapZoom() {
+            d3.select('#mapSVG').transition()
+                .duration(500)
+                .style('transform', `scale(${appState.zoomLevel})`);
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        // TopoJSON feature converter
+        function feature(topology, o) {
+            return o.type === 'GeometryCollection' 
+                ? { 
+                    type: 'FeatureCollection', 
+                    features: o.geometries.map((g, i) => ({ 
+                        type: 'Feature', 
+                        properties: o.properties?.[i], 
+                        geometry: g 
+                    })) 
+                } 
+                : { 
+                    type: 'FeatureCollection', 
+                    features: [{ 
+                        type: 'Feature', 
+                        properties: o.properties, 
+                        geometry: o 
+                    }] 
+                };
+        }
+
+        // ==================== START APPLICATION ====================
+        init();
     </script>
 </body>
 </html>
